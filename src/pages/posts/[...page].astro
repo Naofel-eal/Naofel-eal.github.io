@@ -9,6 +9,13 @@ import Footer from "@/components/Footer.astro";
 import Pagination from "@/components/Pagination.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { getAllTags } from "@/utils/tags";
+import { getPostUrl } from "@/utils/getPostPaths";
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  personSchema,
+  websiteSchema,
+} from "@/utils/schema";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -26,9 +33,49 @@ const t = useTranslations(locale);
 const tags = getAllTags(page.data);
 const total = page.data.length;
 const plural = (n: number) => (n > 1 ? `${n} articles` : `${n} article`);
+
+const postsUrl = new URL("posts/", config.site.url).href;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": `${postsUrl}#blog`,
+      url: postsUrl,
+      name: `Blog de ${config.site.author}`,
+      inLanguage: "fr-FR",
+      author: { "@id": PERSON_ID },
+      publisher: { "@id": PERSON_ID },
+      isPartOf: { "@id": WEBSITE_ID },
+      blogPost: page.data.map(({ id, filePath, data }) => {
+        const postUrl = new URL(
+          getPostUrl(id, filePath, locale),
+          config.site.url
+        ).href;
+        return {
+          "@type": "BlogPosting",
+          "@id": `${postUrl}#article`,
+          url: postUrl,
+          headline: data.title,
+          datePublished: data.pubDatetime.toISOString(),
+          ...(data.modDatetime && {
+            dateModified: data.modDatetime.toISOString(),
+          }),
+          author: { "@id": PERSON_ID },
+        };
+      }),
+    },
+    personSchema,
+    websiteSchema,
+  ],
+};
 ---
 
-<Layout title={`${t.pages.postsTitle} | ${config.site.title}`}>
+<Layout
+  title="Blog : IA agentique, DDD et architecture | Naofel El Alouani"
+  jsonLd={jsonLd}
+  description="Articles sur l'IA agentique, les agents de code autonomes, le Domain-Driven Design et l'architecture logicielle : des retours d'expérience concrets."
+>
   <Header />
 
   <Main pageTitle={t.pages.postsTitle} pageDesc={t.pages.postsDesc}>

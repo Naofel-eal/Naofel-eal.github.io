@@ -12,9 +12,8 @@ const icons = import.meta.glob<{
 const pageUrl = Astro.url;
 
 const platformLabel = (name: string) =>
-  name === "linkedin"
-    ? "LinkedIn"
-    : name.charAt(0).toUpperCase() + name.slice(1);
+  ({ linkedin: "LinkedIn", whatsapp: "WhatsApp", x: "X" })[name] ??
+  name.charAt(0).toUpperCase() + name.slice(1);
 
 const items = await Promise.all(
   shareLinks.map(async ({ name, url, linkTitle }) => {

@@ -1,50 +1,114 @@
 ---
 import Layout from "./Layout.astro";
 import config from "@/config";
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  aboutUrl,
+  personSchema,
+  websiteSchema,
+} from "@/utils/schema";
 
 type Props = {
+  /** Contenu de la balise <title> (peut inclure le nom du site). */
   title?: string;
+  /** Titre de l'article seul, utilisé dans les données structurées. */
+  headline: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  tags?: string[];
+  wordCount?: number;
+  /** URL de la version originale, si l'article est une traduction. */
+  originalURL?: string;
 };
 
-const { site } = config;
+const {
+  title,
+  headline,
+  description,
+  ogImage,
+  ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
+  canonicalURL: canonicalProp,
+  pubDatetime,
+  modDatetime,
+  tags = [],
+  wordCount,
+  originalURL,
+} = Astro.props;
 
-const { title, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
-  Astro.props;
+const canonical = canonicalProp ?? new URL(Astro.url.pathname, Astro.site).href;
+const postsUrl = new URL("posts/", config.site.url).href;
+const modified = modDatetime ?? pubDatetime;
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: title ?? site.title,
-  image: ogImage,
-  ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
+  "@graph": [
     {
-      "@type": "Person",
-      name: site.author,
-      ...(site.profile && { url: site.profile }),
+      "@type": "BlogPosting",
+      "@id": `${canonical}#article`,
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+      headline,
+      ...(description && { description }),
+      ...(ogImage && { image: [ogImage] }),
+      ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
+      ...(modified && { dateModified: modified.toISOString() }),
+      inLanguage: "fr-FR",
+      ...(tags.length > 0 && {
+        keywords: tags.join(", "),
+        articleSection: tags[0],
+      }),
+      ...(wordCount && { wordCount }),
+      author: { "@id": PERSON_ID },
+      publisher: { "@id": PERSON_ID },
+      isPartOf: { "@id": WEBSITE_ID },
+      ...(originalURL && {
+        isBasedOn: originalURL,
+        translationOfWork: {
+          "@type": "BlogPosting",
+          url: originalURL,
+          inLanguage: "en",
+        },
+      }),
     },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Accueil",
+          item: config.site.url,
+        },
+        { "@type": "ListItem", position: 2, name: "Articles", item: postsUrl },
+        { "@type": "ListItem", position: 3, name: headline, item: canonical },
+      ],
+    },
+    personSchema,
+    websiteSchema,
   ],
 };
-
-// JSON.stringify leaves `<` alone, so a title containing `</script>` would
-// end the ld+json block early. `\u003c` reads back as `<` for JSON parsers.
-const structuredDataJson = JSON.stringify(structuredData).replace(
-  /</g,
-  "\\u003c"
-);
 ---
 
-<Layout {title} {description} {ogImage} {canonicalURL}>
+<Layout
+  {title}
+  {description}
+  {ogImage}
+  {ogImageAlt}
+  {ogImageWidth}
+  {ogImageHeight}
+  canonicalURL={canonical}
+  ogType="article"
+  jsonLd={structuredData}
+>
   <Fragment slot="head">
-    <!-- Override og:type for article pages -->
-    <meta property="og:type" content="article" />
-
     {
       pubDatetime && (
         <meta
@@ -54,19 +118,16 @@ const structuredDataJson = JSON.stringify(structuredData).replace(
       )
     }
     {
-      modDatetime && (
+      modified && (
         <meta
           property="article:modified_time"
-          content={modDatetime.toISOString()}
+          content={modified.toISOString()}
         />
       )
     }
-
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={structuredDataJson}
-    />
+    <meta property="article:author" content={aboutUrl} />
+    {tags[0] && <meta property="article:section" content={tags[0]} />}
+    {tags.map(tag => <meta property="article:tag" content={tag} />)}
   </Fragment>
 
   <slot />

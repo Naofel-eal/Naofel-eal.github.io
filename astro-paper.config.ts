@@ -1,13 +1,16 @@
 import { defineAstroPaperConfig } from "./src/types/config";
 
+// URL publique du site : à changer ici le jour où un nom de domaine est ajouté
+const SITE_URL = "https://naofel-eal.github.io/";
+
 export default defineAstroPaperConfig({
   site: {
-    url: "https://naofel-eal.github.io/",
+    url: SITE_URL,
     title: "Naofel El Alouani",
     description:
       "Naofel El Alouani, ingénieur logiciel senior freelance : IA agentique, agents de code autonomes, Domain-Driven Design et architecture hexagonale.",
     author: "Naofel El Alouani",
-    profile: "https://naofel-eal.github.io/about/",
+    profile: new URL("about/", SITE_URL).href,
     ogImage: "default-og.jpg",
     lang: "fr",
     timezone: "Europe/Paris",
@@ -34,6 +37,7 @@ export default defineAstroPaperConfig({
       url: "https://www.linkedin.com/in/naofel-el-alouani-83a947197/",
     },
     { name: "github", url: "https://github.com/Naofel-eal" },
+    { name: "malt", url: "https://www.malt.fr/profile/naofelelalouani" },
   ],
   shareLinks: [
     {

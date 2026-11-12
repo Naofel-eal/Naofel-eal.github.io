@@ -187,7 +187,23 @@
   animation: reveal-in 0.9s var(--ease-out) backwards;
   animation-delay: var(--reveal-delay, 0s);
 }
+/* Haut de page : animé dès le premier affichage, sans attendre le JavaScript,
+   pour que le contenu principal (LCP) soit visible tout de suite. */
+.hero .reveal,
+.page-head.reveal,
+.post-head.reveal,
+.contact .reveal {
+  opacity: 1;
+  animation: reveal-in 0.9s var(--ease-out) backwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
 @media (prefers-reduced-motion: reduce) {
+  .hero .reveal,
+  .page-head.reveal,
+  .post-head.reveal,
+  .contact .reveal {
+    animation: none;
+  }
   .reveal:not(.is-visible) {
     opacity: 1;
   }

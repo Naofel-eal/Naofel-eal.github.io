@@ -46,7 +46,8 @@ export default {
     tagsDesc: "Tous les tags utilisés dans les articles.",
 
     postsTitle: "Articles",
-    postsDesc: "Tous mes articles.",
+    postsDesc:
+      "IA agentique, agents de code, Domain-Driven Design et architecture logicielle : mes retours d'expérience.",
 
     archivesTitle: "Archives",
     archivesDesc: "Tous les articles, classés par date.",

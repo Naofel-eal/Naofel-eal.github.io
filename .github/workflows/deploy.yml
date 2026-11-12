@@ -32,6 +32,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm run build
+        env:
+          # Code de vérification Google Search Console (variable du dépôt)
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
 
       - uses: actions/upload-pages-artifact@v4
         with:

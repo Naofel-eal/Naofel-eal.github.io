@@ -1,5 +1,5 @@
 ---
-title: "À propos"
+title: "À propos de Naofel El Alouani"
 description: "Naofel El Alouani, ingénieur logiciel senior freelance : IA agentique, Domain-Driven Design, architecture hexagonale et développement full-stack Java / Angular."
 ---
 
@@ -21,7 +21,7 @@ Ma conviction : un agent IA n'est jamais meilleur que le contexte qu'on lui donn
 
 _Ingénieur full-stack senior · Tech lead par intérim_
 
-- Conception seul de **PANDA**, un orchestrateur d'agents IA autonomes connecté à Jira et GitHub : **plus de 400 tickets livrés en quelques mois**, déployé dans **80 % des équipes de la Digital Factory**.
+- Conception seul de **[PANDA](/posts/panda-agent-ia-livre-des-fonctionnalites/)**, un orchestrateur d'agents IA autonomes connecté à Jira et GitHub : **plus de 400 tickets livrés en quelques mois**, déployé dans **80 % des équipes de la Digital Factory**.
 - Refonte en **architecture hexagonale et DDD** de l'optimiseur de performance de puits : dette technique fortement réduite, fiabilité et performances nettement améliorées, équipe formée à ces pratiques.
 - Développement de zéro d'une plateforme Big Data de monitoring de la production de plateformes pétrolières offshore et onshore (Angular + Spring Boot), en tant que lead frontend.
 - Évalué **niveau senior** par la direction technique, tech lead par intérim, et formateur des équipes au développement assisté par IA (agents, _skills_, bonnes pratiques).
@@ -50,4 +50,4 @@ _Ingénieur cybersécurité_
 
 ## Travaillons ensemble
 
-Je suis disponible pour des missions en **remote** ou en **hybride**. Réservez un appel, écrivez-moi ou retrouvez-moi sur LinkedIn et Malt depuis la [page contact](/contact/).
+Je suis disponible pour des missions en **remote** ou en **hybride**. Réservez un appel ou écrivez-moi depuis la [page contact](/contact/), ou retrouvez-moi sur [LinkedIn](https://www.linkedin.com/in/naofel-el-alouani-83a947197/), [Malt](https://www.malt.fr/profile/naofelelalouani) et [GitHub](https://github.com/Naofel-eal).

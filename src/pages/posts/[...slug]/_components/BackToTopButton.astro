@@ -40,9 +40,9 @@ const items = withToc ? buildTocTree(headings) : [];
   withToc && (
     <div id="toc-popover" class="toc-popover" popover data-pagefind-ignore>
       <nav aria-labelledby="toc-popover-label" data-toc-nav>
-        <h2 id="toc-popover-label" class="toc-label">
+        <p id="toc-popover-label" class="toc-label">
           {t.post.tableOfContents}
-        </h2>
+        </p>
         <TocList {items} />
         <button type="button" class="toc-back-to-top" data-back-to-top>
           <IconArrowNarrowUp class="size-4" aria-hidden="true" />

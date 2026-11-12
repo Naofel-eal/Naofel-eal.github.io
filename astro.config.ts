@@ -20,15 +20,44 @@ import {
   inlineTocDeprecation,
   rehypeInlineToc,
 } from "./src/utils/rehypeInlineToc";
+import { readdirSync, readFileSync } from "node:fs";
 import config from "./astro-paper.config";
+
+// Date de dernière modification de chaque article, pour le <lastmod> du sitemap
+const postLastmod = new Map<string, string>();
+for (const file of readdirSync("src/content/posts")) {
+  if (file.startsWith("_") || !/\.mdx?$/.test(file)) continue;
+  const frontmatter =
+    readFileSync(`src/content/posts/${file}`, "utf8").match(
+      /^---\n([\s\S]*?)\n---/
+    )?.[1] ?? "";
+  const raw = (frontmatter.match(/^modDatetime:\s*(\S+)/m) ??
+    frontmatter.match(/^pubDatetime:\s*(\S+)/m))?.[1];
+  const date = raw ? new Date(raw) : null;
+  if (date && !Number.isNaN(date.getTime())) {
+    postLastmod.set(
+      `/posts/${file.replace(/\.mdx?$/, "")}/`,
+      date.toISOString()
+    );
+  }
+}
+const latestPost = [...postLastmod.values()].sort().at(-1);
 
 export default defineConfig({
   site: config.site.url,
   integrations: [
     mdx(),
     sitemap({
-      filter: page =>
-        config.features?.showArchives !== false || !/\/archives\/?$/.test(page),
+      // Pages utilitaires exclues (elles sont aussi en noindex)
+      filter: page => !/\/(search|404)\/?$/.test(page),
+      serialize(item) {
+        const path = new URL(item.url).pathname;
+        const lastmod =
+          postLastmod.get(path) ??
+          (path === "/" || path === "/posts/" ? latestPost : undefined);
+        if (lastmod) item.lastmod = lastmod;
+        return item;
+      },
     }),
     inlineTocDeprecation(),
   ],
@@ -72,9 +101,11 @@ export default defineConfig({
       cssVariable: "--font-google-sans-code",
       provider: fontProviders.google(),
       fallbacks: ["monospace"],
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
+      // Police réservée au code : graisses et formats utiles uniquement
+      // (woff2 pour le navigateur, ttf pour les images de partage générées)
+      weights: [400, 500, 700],
+      styles: ["normal"],
+      formats: ["woff2", "ttf"],
     },
   ],
   env: {

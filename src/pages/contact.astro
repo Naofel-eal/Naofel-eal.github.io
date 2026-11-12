@@ -3,8 +3,14 @@ import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import portrait from "@/assets/images/naofel-parlons.jpg";
+import portrait from "@/assets/images/naofel-el-alouani-polytech-dijon.jpg";
 import config from "@/config";
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  personSchema,
+  websiteSchema,
+} from "@/utils/schema";
 
 // L'e-mail est découpé pour ne pas apparaître en clair dans le HTML
 // (protection simple contre les robots qui collectent les adresses).
@@ -25,7 +31,23 @@ const missions = [
 ---
 
 <Layout
-  title={`Contact | ${config.site.title}`}
+  title="Contacter Naofel El Alouani, ingénieur logiciel freelance"
+  jsonLd={{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": new URL("contact/", config.site.url).href,
+        url: new URL("contact/", config.site.url).href,
+        name: "Contact",
+        inLanguage: "fr-FR",
+        about: { "@id": PERSON_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+      },
+      personSchema,
+      websiteSchema,
+    ],
+  }}
   description="Contacter Naofel El Alouani, ingénieur logiciel senior freelance : appel de 30 minutes, e-mail, LinkedIn et Malt."
 >
   <Header />
@@ -37,7 +59,7 @@ const missions = [
         alt="Naofel El Alouani au micro, pendant son discours de major de promotion à Polytech Dijon en 2025"
         widths={[480, 720, 960, 1200]}
         sizes="(max-width: 860px) 100vw, 440px"
-        loading="eager"
+        priority
         class="portrait-img"
       />
       <figcaption>

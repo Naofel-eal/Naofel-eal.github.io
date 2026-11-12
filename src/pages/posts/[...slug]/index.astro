@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import { getImage } from "astro:assets";
 import PostLayout from "@/layouts/PostLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -66,6 +67,10 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const {
   title,
   description,
+  seoTitle,
+  seoDescription,
+  originalURL,
+  author,
   ogImage: initOgImage,
   canonicalURL,
   pubDatetime,
@@ -83,11 +88,25 @@ const readingTime = Math.max(1, Math.round(words / 230));
 const tocHeadings = config.features.toc && !hideToc ? headings : [];
 
 let ogImageUrl: string | undefined;
+let ogImageWidth = 1200;
+let ogImageHeight = 630;
 
 if (typeof initOgImage === "string") {
   ogImageUrl = initOgImage;
 } else if (initOgImage?.src) {
-  ogImageUrl = initOgImage.src;
+  // Image de partage allégée : 1200 px de large, en JPEG
+  const og = await getImage({
+    src: initOgImage,
+    width: 1200,
+    format: "jpg",
+    quality: 82,
+  });
+  ogImageUrl = og.src;
+  ogImageWidth = Number(og.attributes.width ?? 1200);
+  ogImageHeight = Number(
+    og.attributes.height ??
+      Math.round((1200 * initOgImage.height) / initOgImage.width)
+  );
 }
 
 if (!ogImageUrl && config.features.dynamicOgImage) {
@@ -104,12 +123,20 @@ const ogImage = ogImageUrl
 ---
 
 <PostLayout
-  title={`${title} | ${config.site.title}`}
-  description={description}
+  title={seoTitle ??
+    (title.length > 50 ? title : `${title} | ${config.site.title}`)}
+  headline={title}
+  description={seoDescription ?? description}
   ogImage={ogImage}
+  ogImageAlt={title}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
   canonicalURL={canonicalURL}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
+  tags={tags}
+  wordCount={words}
+  originalURL={originalURL}
 >
   <Header />
 
@@ -120,6 +147,14 @@ const ogImage = ogImageUrl
 
     <header class="app-layout post-head reveal">
       <p class="post-meta">
+        <span
+          >Par <a
+            href={getRelativeLocaleUrl(locale, "about")}
+            rel="author"
+            class="post-author">{author}</a
+          ></span
+        >
+        <span aria-hidden="true">·</span>
         <time datetime={pubDatetime.toISOString()}>
           {formatPostDate(pubDatetime, timezone)}
         </time>
@@ -698,6 +733,13 @@ const ogImage = ogImageUrl
     gap: 0 6px;
     font-size: 14px;
     color: var(--muted-foreground);
+  }
+  .post-author {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+  .post-author:hover {
+    color: var(--accent);
   }
   .post-title {
     margin-top: 14px;

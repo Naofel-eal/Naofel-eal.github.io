@@ -1,7 +1,11 @@
 ---
 title: "Notre agent IA n'écrit pas de code. Il livre des fonctionnalités."
 description: "Comment nous avons construit PANDA, un orchestrateur autonome qui lit les tickets Jira, implémente le code et traite les retours de revue, tout en laissant les développeurs maîtres de ce qui part en production."
+seoTitle: "PANDA : un agent IA autonome, du ticket Jira à la pull request"
+seoDescription: "PANDA, un orchestrateur d'agents IA autonomes : il lit les tickets Jira, code, ouvre la pull request GitHub et traite la revue, sous contrôle humain."
+originalURL: "https://medium.com/totalenergies-digital-factory/our-ai-agent-does-not-write-code-it-ships-features-e5d679d67d71"
 pubDatetime: 2026-05-25T09:00:00+02:00
+modDatetime: 2026-11-12T09:00:00+01:00
 featured: true
 tags:
   - IA agentique
@@ -9,7 +13,7 @@ tags:
   - Architecture
   - Retour d'expérience
 draft: false
-ogImage: ../../assets/images/panda/couverture.png
+ogImage: ../../assets/images/panda/panda-agent-ia-jira-github.png
 ---
 
 _Cet article a d'abord été publié en anglais sur le [blog Medium de la TotalEnergies Digital Factory](https://medium.com/totalenergies-digital-factory/our-ai-agent-does-not-write-code-it-ships-features-e5d679d67d71)._
@@ -17,7 +21,7 @@ _Cet article a d'abord été publié en anglais sur le [blog Medium de la TotalE
 > [!note] Mise à jour, novembre 2026
 > Depuis la publication de cet article, PANDA a livré **plus de 400 tickets** et il est déployé dans **80 % des équipes** de la TotalEnergies Digital Factory.
 
-![PANDA : Jira, l'orchestrateur et l'agent, puis GitHub](../../assets/images/panda/couverture.png)
+![PANDA : Jira, l'orchestrateur et l'agent, puis GitHub](../../assets/images/panda/panda-agent-ia-jira-github.png)
 
 Nous utilisons Jira pour les tickets, GitHub pour le versionnement et la revue de code, et des agents de code IA pour assister les développeurs. Une question a fini par s'imposer : et si l'on pouvait automatiser tout le cycle d'implémentation, de la prise en charge du ticket jusqu'au code livré ?
 
@@ -55,8 +59,10 @@ PANDA est un orchestrateur autonome qui fonctionne par **phases explicites**. Ch
 
 <figure>
   <video
-    src="/media/panda/scenario-jira.mp4"
-    poster="/media/panda/scenario-jira-poster.jpg"
+    src="/media/panda/panda-scenario-jira.mp4"
+    width="1280"
+    height="720"
+    poster="/media/panda/panda-scenario-jira.jpg"
     autoplay
     loop
     muted
@@ -97,7 +103,7 @@ Quand toutes les validations sont passées, le ticket atteint son état final.
 
 Voici le flux complet, de la prise en charge du ticket à la livraison, avec les échanges entre l'orchestrateur, l'agent et les systèmes externes :
 
-![Diagramme de séquence de PANDA : Jira, l'orchestrateur, l'agent, GitHub et le fournisseur de LLM](../../assets/images/panda/sequence.png)
+![Diagramme de séquence de PANDA : Jira, l'orchestrateur, l'agent, GitHub et le fournisseur de LLM](../../assets/images/panda/panda-diagramme-sequence.png)
 
 ## Architecture : deux conteneurs, zéro confiance
 

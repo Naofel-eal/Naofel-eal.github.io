@@ -1,5 +1,8 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import portrait from "@/assets/images/naofel-el-alouani-polytech-dijon.jpg";
+import { personSchema, websiteSchema } from "@/utils/schema";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -17,6 +20,24 @@ const posts = getSortedPosts(await getCollection("posts")).slice(0, 3);
 const contactUrl = url("contact");
 
 const pandaUrl = "https://github.com/Naofel-eal/PANDA";
+const pandaArticleUrl = url("posts/panda-agent-ia-livre-des-fonctionnalites");
+
+// Données structurées : le site et la personne qui le publie
+const portraitImage = await getImage({
+  src: portrait,
+  width: 800,
+  format: "jpg",
+});
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    websiteSchema,
+    {
+      ...personSchema,
+      image: new URL(portraitImage.src, Astro.site).href,
+    },
+  ],
+};
 
 const stats = [
   {
@@ -165,7 +186,10 @@ const experiences = [
 ];
 ---
 
-<Layout>
+<Layout
+  title="Naofel El Alouani · Ingénieur freelance IA agentique et DDD"
+  jsonLd={jsonLd}
+>
   <Header />
 
   <main id="main-content">
@@ -213,6 +237,12 @@ const experiences = [
     <section class="section wide-layout">
       <p class="eyebrow reveal">Expertise</p>
       <h2 class="display-title reveal">Ce que je fais.</h2>
+      <p class="lead-text section-lead reveal">
+        Ingénieur logiciel et développeur freelance Java, Spring Boot et
+        Angular, j'interviens en mission, en remote ou en hybride, auprès des
+        équipes tech partout en France&nbsp;: agents IA, architecture DDD et
+        hexagonale, développement full-stack et cybersécurité.
+      </p>
       <div class="grid-2">
         {
           services.map(s => (
@@ -293,9 +323,14 @@ const experiences = [
             <strong>Résultat&nbsp;:</strong> plus de 400 tickets livrés en quelques
             mois, dans 80&nbsp;% des équipes de la Digital Factory.
           </p>
-          <a href={pandaUrl} class="link-arrow" target="_blank" rel="noopener"
-            >Voir le projet sur GitHub</a
-          >
+          <div class="case-links">
+            <a href={pandaArticleUrl} class="link-arrow"
+              >Lire l'étude de cas détaillée</a
+            >
+            <a href={pandaUrl} class="link-arrow" target="_blank" rel="noopener"
+              >Voir le projet sur GitHub</a
+            >
+          </div>
         </div>
       </div>
     </section>
@@ -796,6 +831,11 @@ const experiences = [
   .section-lead {
     margin-top: 18px;
     max-width: 40rem;
+  }
+  .case-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
   }
 
   /* ---------- Parcours ---------- */

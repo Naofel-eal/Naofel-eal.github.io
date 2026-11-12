@@ -18,6 +18,12 @@ const posts = defineCollection({
       tags: z.array(z.string()).default([]),
       ogImage: image().or(z.string()).optional(),
       description: z.string(),
+      /** Titre pour Google et les réseaux (≈ 60 caractères), si différent du titre affiché. */
+      seoTitle: z.string().optional(),
+      /** Description pour Google (≈ 155 caractères), si différente du chapô affiché. */
+      seoDescription: z.string().optional(),
+      /** URL de la version originale, si l'article est une traduction. */
+      originalURL: z.url().optional(),
       canonicalURL: z.string().optional(),
       hideEditPost: z.boolean().optional(),
       hideToc: z.boolean().optional(),
