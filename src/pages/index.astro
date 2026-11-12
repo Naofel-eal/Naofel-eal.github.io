@@ -240,6 +240,37 @@ const experiences = [
       </div>
     </section>
 
+    <!-- Méthode -->
+    <section class="section wide-layout">
+      <p class="eyebrow reveal">Méthode</p>
+      <h2 class="display-title reveal">
+        Un agent n'est bon que si son contexte l'est.
+      </h2>
+      <p class="lead-text section-lead reveal">
+        Le DDD, le BDD et une documentation à jour donnent à l'agent un
+        vocabulaire métier précis et des comportements vérifiables. Les tests et
+        les contrôles automatisés vérifient chaque ligne qu'il écrit.
+      </p>
+      <ol class="grid-2 steps">
+        {
+          steps.map(s => (
+            <li class="step reveal">
+              <span class="step-n">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              {s.tags && (
+                <ul class="card-tags">
+                  {s.tags.map(t => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
     <!-- Étude de cas PANDA -->
     <section id="panda" class="section wide-layout">
       <div class="case surface-card reveal">
@@ -279,37 +310,6 @@ const experiences = [
           >
         </div>
       </div>
-    </section>
-
-    <!-- Méthode -->
-    <section class="section wide-layout">
-      <p class="eyebrow reveal">Méthode</p>
-      <h2 class="display-title reveal">
-        Un agent n'est bon que si son contexte l'est.
-      </h2>
-      <p class="lead-text section-lead reveal">
-        Le DDD, le BDD et une documentation à jour donnent à l'agent un
-        vocabulaire métier précis et des comportements vérifiables. Les tests et
-        les contrôles automatisés vérifient chaque ligne qu'il écrit.
-      </p>
-      <ol class="grid-2 steps">
-        {
-          steps.map(s => (
-            <li class="step reveal">
-              <span class="step-n">{s.n}</span>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-              {s.tags && (
-                <ul class="card-tags">
-                  {s.tags.map(t => (
-                    <li>{t}</li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
-        }
-      </ol>
     </section>
 
     <!-- Cybersécurité -->
