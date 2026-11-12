@@ -7,28 +7,77 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app: var(--font-google-sans-code);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --font-app: var(--font-sans);
+  --font-mono:
+    var(--font-google-sans-code), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter",
+    "Segoe UI", system-ui, sans-serif;
+  --max-wide: 1080px;
+  --radius-card: 24px;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Light theme values */
 :root,
 [data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
+  --background: #fbfbfd;
+  --surface: #ffffff;
+  --surface-alt: #f5f5f7;
+  --foreground: #1d1d1f;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
   --accent-foreground: #ffffff;
-  --muted: #e6e6e6;
-  --muted-foreground: #6b7280;
-  --border: #ece9e9;
+  --muted: #ececf0;
+  --muted-foreground: #6e6e73;
+  --border: rgba(0, 0, 0, 0.08);
+  --nav-bg: rgba(251, 251, 253, 0.72);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 30px rgba(0, 0, 0, 0.06);
+  --gradient-text: linear-gradient(
+    90deg,
+    #0071e3 0%,
+    #7a5cff 50%,
+    #e0457b 100%
+  );
+  --glow: radial-gradient(
+    closest-side,
+    rgba(0, 113, 227, 0.16),
+    rgba(122, 92, 255, 0.08) 55%,
+    transparent
+  );
+  --ok: #34c759;
 }
 
 /* Dark theme values */
 [data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
+  --background: #000000;
+  --surface: #161617;
+  --surface-alt: #0b0b0c;
+  --foreground: #f5f5f7;
+  --accent: #2997ff;
+  --accent-hover: #47a5ff;
   --accent-foreground: #ffffff;
-  --muted: #343f60;
-  --muted-foreground: #afb9ca;
-  --border: #ab4b08;
+  --muted: #232325;
+  --muted-foreground: #a1a1a6;
+  --border: rgba(255, 255, 255, 0.1);
+  --nav-bg: rgba(0, 0, 0, 0.66);
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --gradient-text: linear-gradient(
+    90deg,
+    #2997ff 0%,
+    #a78bfa 50%,
+    #ff6b9a 100%
+  );
+  --glow: radial-gradient(
+    closest-side,
+    rgba(41, 151, 255, 0.22),
+    rgba(167, 139, 250, 0.1) 55%,
+    transparent
+  );
+  --ok: #30d158;
 }

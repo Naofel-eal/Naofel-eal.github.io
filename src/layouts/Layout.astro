@@ -110,6 +110,14 @@ const rssHref = getAssetPath("rss.xml");
       })();
     </script>
 
+    <noscript
+      ><style>
+        .reveal {
+          opacity: 1 !important;
+        }
+      </style></noscript
+    >
+
     <ClientRouter />
   </head>
   <body
@@ -118,6 +126,7 @@ const rssHref = getAssetPath("rss.xml");
     <slot />
     <script>
       import "@/scripts/theme";
+      import "@/scripts/reveal";
     </script>
   </body>
 </html>

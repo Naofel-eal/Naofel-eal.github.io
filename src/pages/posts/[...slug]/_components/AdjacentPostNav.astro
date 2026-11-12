@@ -1,6 +1,4 @@
 ---
-import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -21,33 +19,63 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 ---
 
-<div data-pagefind-ignore class="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-  {
-    prevPost && (
-      <a
-        href={getPostUrl(prevPost.id, prevPost.filePath, locale)}
-        class="flex w-full gap-1 hover:opacity-75"
-      >
-        <IconArrowLeft class="inline-block flex-none rtl:rotate-180" />
-        <div>
-          <span>{t.post.previousPost}</span>
-          <div class="text-accent/85 text-sm">{prevPost.title}</div>
-        </div>
-      </a>
-    )
+{
+  (prevPost || nextPost) && (
+    <nav data-pagefind-ignore class="adjacent" aria-label="Autres articles">
+      {prevPost && (
+        <a
+          href={getPostUrl(prevPost.id, prevPost.filePath, locale)}
+          class="surface-card adj"
+        >
+          <span class="adj-label">‹ {t.post.previousPost}</span>
+          <span class="adj-title">{prevPost.title}</span>
+        </a>
+      )}
+      {nextPost && (
+        <a
+          href={getPostUrl(nextPost.id, nextPost.filePath, locale)}
+          class="surface-card adj adj-next"
+        >
+          <span class="adj-label">{t.post.nextPost} ›</span>
+          <span class="adj-title">{nextPost.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .adjacent {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
-  {
-    nextPost && (
-      <a
-        href={getPostUrl(nextPost.id, nextPost.filePath, locale)}
-        class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"
-      >
-        <div>
-          <span>{t.post.nextPost}</span>
-          <div class="text-accent/85 text-sm">{nextPost.title}</div>
-        </div>
-        <IconArrowRight class="inline-block flex-none rtl:rotate-180" />
-      </a>
-    )
+  .adj {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 22px 24px;
   }
-</div>
+  .adj-next {
+    grid-column: 2;
+    text-align: end;
+  }
+  .adj-label {
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .adj-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  @media (max-width: 640px) {
+    .adjacent {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .adj-next {
+      grid-column: auto;
+    }
+  }
+</style>

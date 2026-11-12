@@ -43,8 +43,9 @@ const t = useTranslations(locale);
   <Breadcrumb />
 
   <Main
-    pageTitle={`${t.pages.tagTitle}: ${tagName}`}
-    pageDesc={`${t.pages.tagDesc} "${tagName}".`}
+    eyebrow={t.pages.tagTitle}
+    pageTitle={`#${tagName}`}
+    pageDesc={`${t.pages.tagDesc} « ${tagName} ».`}
   >
     <ul>
       {page.data.map(data => <Card {...data} />)}

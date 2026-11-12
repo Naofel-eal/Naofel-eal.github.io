@@ -5,10 +5,11 @@ import config from "@/config";
 type Props = {
   pageTitle: string | [string, string];
   pageDesc?: string;
+  eyebrow?: string;
   class?: string;
 };
 
-const { pageTitle, pageDesc, class: className } = Astro.props;
+const { pageTitle, pageDesc, eyebrow, class: className } = Astro.props;
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const backUrl = config.features.showBackButton
@@ -16,15 +17,31 @@ const backUrl = config.features.showBackButton
   : getRelativeLocaleUrl(locale, "");
 ---
 
-<main
-  data-backUrl={backUrl}
-  id="main-content"
-  class:list={["app-layout pb-4", className]}
->
-  <h1 class="text-2xl font-semibold sm:text-3xl">{pageTitle}</h1>
-  <p class="mt-2 mb-6 italic">{pageDesc}</p>
-  <slot />
+<main data-backUrl={backUrl} id="main-content" class="app-layout page-main">
+  <header class="page-head reveal">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="display-title">{pageTitle}</h1>
+    {pageDesc && <p class="lead-text page-desc">{pageDesc}</p>}
+  </header>
+  <div class={className}>
+    <slot />
+  </div>
 </main>
+
+<style>
+  .page-main {
+    padding-top: clamp(56px, 9vw, 104px);
+  }
+  .page-head {
+    margin-bottom: clamp(40px, 6vw, 64px);
+  }
+  .page-head h1 {
+    margin-top: 6px;
+  }
+  .page-desc {
+    margin-top: 14px;
+  }
+</style>
 
 <script>
   document.addEventListener("astro:page-load", () => {

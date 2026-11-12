@@ -2,30 +2,70 @@
 import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
-import Datetime from "./Datetime.astro";
+import { formatPostDate } from "@/utils/formatPostDate";
 
 type Props = {
   variant?: "h2" | "h3";
 } & CollectionEntry<"posts">;
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
-
-const { title, description, ...props } = data;
+const { title, description, pubDatetime, modDatetime, timezone } = data;
+const isModified = modDatetime && modDatetime > pubDatetime;
+const date = isModified ? modDatetime : pubDatetime;
 ---
 
-<li class="my-6">
+<li class="card-item reveal">
   <a
     href={getPostUrl(id, filePath, Astro.currentLocale)}
-    class:list={[
-      "text-accent inline-block text-lg font-medium",
-      "decoration-dashed underline-offset-4 hover:underline",
-      "focus-visible:no-underline focus-visible:underline-offset-0",
-    ]}
+    class="surface-card group card-link"
   >
-    <Heading transition:name={toTransitionName(id)}>
+    <time datetime={date.toISOString()}>
+      {isModified && "Mis à jour le "}{formatPostDate(date, timezone)}
+    </time>
+    <Heading transition:name={toTransitionName(id)} class="card-title">
       {title}
     </Heading>
+    <p class="card-desc">{description}</p>
+    <span class="link-arrow card-more">Lire l'article</span>
   </a>
-  <Datetime {...props} />
-  <p>{description}</p>
 </li>
+
+<style>
+  .card-item {
+    list-style: none;
+  }
+  .card-item:not(:last-child) {
+    margin-bottom: 16px;
+  }
+  :global(.grid-3) > .card-item {
+    margin-bottom: 0;
+  }
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 28px;
+  }
+  time {
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+  .card-title {
+    margin-top: 10px;
+    font-size: 21px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .card-desc {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted-foreground);
+    flex: 1;
+  }
+  .card-more {
+    margin-top: 20px;
+    font-size: 15px;
+  }
+</style>
