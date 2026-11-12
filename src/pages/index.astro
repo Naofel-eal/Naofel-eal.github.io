@@ -1,136 +1,776 @@
 ---
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import Card from "@/components/Card.astro";
-import LinkButton from "@/components/LinkButton.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
-import { useTranslations } from "@/i18n";
+import { getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
 
-const { socials, posts: postsConfig } = config;
-
 const locale = Astro.currentLocale ?? config.site.lang;
-const t = useTranslations(locale);
+const url = (path: string) => getRelativeLocaleUrl(locale, path);
 
-const posts = await getCollection("posts");
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-const homePath = getRelativeLocaleUrl(locale, "");
+const posts = getSortedPosts(await getCollection("posts")).slice(0, 3);
+
+const dateFmt = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: config.site.timezone,
+});
+
+const linkedin = config.socials.find(s => s.name === "linkedin")?.url;
+const github = config.socials.find(s => s.name === "github")?.url;
+// Le bouton « Me contacter » pointe vers LinkedIn dès que l'URL est renseignée
+// dans astro-paper.config.ts, sinon vers la page À propos.
+const contactUrl = linkedin ?? url("about");
+const contactExternal = Boolean(linkedin);
+
+// TODO : adapte ces trois blocs à tes services réels.
+const services = [
+  {
+    title: "Applications web",
+    text: "Des interfaces rapides, accessibles et soignées, du prototype à la mise en production.",
+    icon: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h18M7 7h.01M10 7h.01",
+  },
+  {
+    title: "API & architecture",
+    text: "Des fondations solides et lisibles, pensées pour évoluer avec votre produit sans dette inutile.",
+    icon: "M12 3 3 7.5l9 4.5 9-4.5L12 3Zm-9 9 9 4.5 9-4.5M3 16.5 12 21l9-4.5",
+  },
+  {
+    title: "Conseil & audit",
+    text: "Un regard extérieur sur votre code et vos choix techniques, avec des recommandations concrètes.",
+    icon: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4-4",
+  },
+];
+
+const steps = [
+  {
+    n: "01",
+    title: "Comprendre",
+    text: "On clarifie ensemble le besoin, les contraintes et ce qui compte vraiment pour vos utilisateurs.",
+  },
+  {
+    n: "02",
+    title: "Construire",
+    text: "Des itérations courtes, des démos régulières et un code propre, testé et documenté.",
+  },
+  {
+    n: "03",
+    title: "Livrer",
+    text: "Mise en production sereine, passation claire et accompagnement après le lancement.",
+  },
+];
+
+const year = new Date().getFullYear();
 ---
 
 <Layout>
-  <Header />
-  <main
-    id="main-content"
-    data-layout="index"
-    data-home-path={homePath}
-    class="app-layout my-1"
-  >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Bonjour, moi c'est Naofel 👋
-      </h1>{" "}
-      <a
-        target="_blank"
-        href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-        class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
+  <div class="home">
+    <header class="nav">
+      <nav class="nav-inner" aria-label="Navigation principale">
+        <a href={url("")} class="brand">{config.site.author}</a>
+        <div class="nav-links">
+          <a href={url("posts")}>Articles</a>
+          <a href={url("about")} class="hide-xs">À propos</a>
+          <button
+            id="theme-btn"
+            class="icon-btn"
+            title="Changer de thème"
+            aria-label="auto"
+            aria-live="polite"
+          >
+            <svg class="sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"
+              ></path>
+            </svg>
+            <svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+            </svg>
+          </button>
+          <a
+            href={contactUrl}
+            class="nav-cta"
+            {...contactExternal && { target: "_blank", rel: "noopener" }}
+            >Contact</a
+          >
+        </div>
+      </nav>
+    </header>
 
-      <p>
-        Développeur freelance. J'écris ici sur ce que j'apprends en construisant
-        des projets pour mes clients : architecture, outils, bonnes pratiques et
-        retours d'expérience concrets.
-      </p>
-      <p class="mt-2">
-        Un projet en tête ? Parlons-en, plus d'infos sur la page{" "}
-        <LinkButton
-          class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="/about/"
-        >
-          À propos
-        </LinkButton>.
-      </p>
+    <main id="main-content">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="glow" aria-hidden="true"></div>
+        <p class="pill reveal">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="hide-xs">Développeur freelance ·</span> Disponible pour de
+          nouvelles missions
+        </p>
+        <h1 class="reveal">
+          Des produits numériques,<br />
+          <span class="gradient">pensés avec soin.</span>
+        </h1>
+        <p class="lead reveal">
+          J'accompagne les entreprises dans la conception et le développement de
+          leurs applications, avec un souci constant de la qualité, de la
+          simplicité et de l'expérience utilisateur.
+        </p>
+        <div class="actions reveal">
+          <a
+            href={contactUrl}
+            class="btn-primary"
+            {...contactExternal && { target: "_blank", rel: "noopener" }}
+            >Démarrer un projet</a
+          >
+          <a href={url("posts")} class="link-arrow">Lire le blog</a>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="section">
+        <p class="eyebrow reveal">Expertise</p>
+        <h2 class="reveal">Ce que je fais.</h2>
+        <div class="grid-3">
+          {
+            services.map(s => (
+              <article class="card reveal">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d={s.icon} />
+                  </svg>
+                </span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Méthode -->
+      <section class="section">
+        <p class="eyebrow reveal">Méthode</p>
+        <h2 class="reveal">Simple. Transparent. Efficace.</h2>
+        <ol class="steps">
+          {
+            steps.map(s => (
+              <li class="step reveal">
+                <span class="step-n">{s.n}</span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <!-- Articles -->
       {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
+        posts.length > 0 && (
+          <section class="section">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow reveal">Le blog</p>
+                <h2 class="reveal">Derniers articles.</h2>
+              </div>
+              <a href={url("posts")} class="link-arrow reveal">
+                Tous les articles
+              </a>
             </div>
-            <Socials />
-          </div>
+            <div class="posts">
+              {posts.map(({ id, data, filePath }) => (
+                <a href={getPostUrl(id, filePath, locale)} class="post reveal">
+                  <time datetime={data.pubDatetime.toISOString()}>
+                    {dateFmt.format(data.pubDatetime)}
+                  </time>
+                  <h3>{data.title}</h3>
+                  <p>{data.description}</p>
+                  <span class="link-arrow small">Lire l'article</span>
+                </a>
+              ))}
+            </div>
+          </section>
         )
       }
-    </section>
 
-    {
-      featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-border border-b": recentPosts.length > 0 },
-          ]}
+      <!-- CTA -->
+      <section class="cta reveal">
+        <h2>Un projet en tête&nbsp;?</h2>
+        <p>Parlons de vos besoins, simplement et sans engagement.</p>
+        <a
+          href={contactUrl}
+          class="btn-primary"
+          {...contactExternal && { target: "_blank", rel: "noopener" }}
+          >Me contacter</a
         >
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.featured}
-          </h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
+      </section>
+    </main>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.recentPosts}
-          </h2>
-          <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
-        {t.home.allPosts}
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
-  </main>
-  <Footer />
+    <footer class="footer">
+      <p>© {year} {config.site.author}</p>
+      <nav aria-label="Liens secondaires">
+        <a href={url("posts")}>Articles</a>
+        <a href={url("about")}>À propos</a>
+        {
+          linkedin && (
+            <a href={linkedin} target="_blank" rel="noopener">
+              LinkedIn
+            </a>
+          )
+        }
+        {
+          github && (
+            <a href={github} target="_blank" rel="noopener">
+              GitHub
+            </a>
+          )
+        }
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </footer>
+  </div>
 </Layout>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset;
-    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-    if (indexLayout?.layout) {
-      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
+  function initReveal() {
+    const items = document.querySelectorAll<HTMLElement>(".home .reveal");
+    if (
+      !("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      items.forEach(el => el.classList.add("is-visible"));
+      return;
     }
-  });
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
+    );
+    items.forEach(el => io.observe(el));
+  }
+  document.addEventListener("astro:page-load", initReveal);
 </script>
+
+<style>
+  /* ---------- Design tokens (homepage only) ---------- */
+  :global(html:has(.home)) {
+    --h-bg: #fbfbfd;
+    --h-bg-alt: #f5f5f7;
+    --h-card: #ffffff;
+    --h-text: #1d1d1f;
+    --h-text-2: #6e6e73;
+    --h-line: rgba(0, 0, 0, 0.08);
+    --h-accent: #0071e3;
+    --h-accent-hover: #0077ed;
+    --h-nav: rgba(251, 251, 253, 0.72);
+    --h-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 30px rgba(0, 0, 0, 0.06);
+    --h-grad: linear-gradient(90deg, #0071e3 0%, #7a5cff 50%, #e0457b 100%);
+    --h-glow: radial-gradient(
+      closest-side,
+      rgba(0, 113, 227, 0.16),
+      rgba(122, 92, 255, 0.08) 55%,
+      transparent
+    );
+    --h-ok: #34c759;
+  }
+  :global(html[data-theme="dark"]:has(.home)) {
+    --h-bg: #000000;
+    --h-bg-alt: #0b0b0c;
+    --h-card: #161617;
+    --h-text: #f5f5f7;
+    --h-text-2: #a1a1a6;
+    --h-line: rgba(255, 255, 255, 0.1);
+    --h-accent: #2997ff;
+    --h-accent-hover: #47a5ff;
+    --h-nav: rgba(0, 0, 0, 0.66);
+    --h-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --h-grad: linear-gradient(90deg, #2997ff 0%, #a78bfa 50%, #ff6b9a 100%);
+    --h-glow: radial-gradient(
+      closest-side,
+      rgba(41, 151, 255, 0.22),
+      rgba(167, 139, 250, 0.1) 55%,
+      transparent
+    );
+    --h-ok: #30d158;
+  }
+  :global(body:has(> .home)) {
+    background: var(--h-bg);
+  }
+
+  .home {
+    --max: 1080px;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+      "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--h-text);
+    background: var(--h-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
+    min-height: 100svh;
+    overflow-x: clip;
+  }
+  .home a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .home :focus-visible {
+    outline: 2px solid var(--h-accent);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--h-nav);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--h-line);
+  }
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    height: 52px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-size: 13px;
+  }
+  .nav-links > a:not(.nav-cta) {
+    color: var(--h-text-2);
+    transition: color 0.2s ease;
+  }
+  .nav-links > a:not(.nav-cta):hover {
+    color: var(--h-text);
+  }
+  .nav-cta {
+    background: var(--h-text);
+    color: var(--h-bg) !important;
+    padding: 6px 14px;
+    border-radius: 980px;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+  .nav-cta:hover {
+    opacity: 0.85;
+  }
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: var(--h-text-2);
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+  .icon-btn:hover {
+    color: var(--h-text);
+    background: var(--h-line);
+  }
+  .icon-btn svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .icon-btn .sun {
+    display: none;
+  }
+  :global([data-theme="dark"]) .icon-btn .sun {
+    display: block;
+  }
+  :global([data-theme="dark"]) .icon-btn .moon {
+    display: none;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(88px, 14vw, 168px) 22px clamp(72px, 10vw, 128px);
+    text-align: center;
+  }
+  .glow {
+    position: absolute;
+    inset: -10% -20% auto;
+    height: 720px;
+    background: var(--h-glow);
+    filter: blur(20px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--h-line);
+    border-radius: 980px;
+    background: var(--h-card);
+    color: var(--h-text-2);
+    font-size: 13px;
+    box-shadow: var(--h-shadow);
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--h-ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--h-ok) 22%, transparent);
+  }
+  .hero h1 {
+    margin: 28px auto 0;
+    font-size: clamp(42px, 8vw, 88px);
+    line-height: 1.04;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    max-width: 14ch;
+  }
+  .gradient {
+    background: var(--h-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lead {
+    margin: 28px auto 0;
+    max-width: 38rem;
+    font-size: clamp(18px, 2.2vw, 21px);
+    line-height: 1.5;
+    color: var(--h-text-2);
+    letter-spacing: -0.015em;
+  }
+  .actions {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px 28px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--h-accent);
+    color: #fff !important;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 980px;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+  .btn-primary:hover {
+    background: var(--h-accent-hover);
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+  .link-arrow {
+    color: var(--h-accent) !important;
+    font-size: 17px;
+    white-space: nowrap;
+  }
+  .link-arrow::after {
+    content: "›";
+    display: inline-block;
+    margin-left: 6px;
+    transition: transform 0.25s ease;
+  }
+  .link-arrow:hover {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+  }
+  .link-arrow:hover::after,
+  .post:hover .link-arrow::after {
+    transform: translateX(3px);
+  }
+  .link-arrow.small {
+    font-size: 15px;
+  }
+
+  /* ---------- Sections ---------- */
+  .section {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(64px, 9vw, 112px) 22px 0;
+  }
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--h-accent);
+    letter-spacing: 0;
+  }
+  .section h2,
+  .cta h2 {
+    margin-top: 8px;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .grid-3 {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .card {
+    background: var(--h-card);
+    border-radius: 24px;
+    padding: 32px 28px 36px;
+    box-shadow: var(--h-shadow);
+    transition:
+      transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.4s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  .card-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--h-accent) 12%, transparent);
+    color: var(--h-accent);
+  }
+  .card-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .card h3,
+  .step h3 {
+    margin-top: 22px;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .card p,
+  .step p {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--h-text-2);
+  }
+
+  .steps {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  .step {
+    padding-top: 24px;
+    border-top: 1px solid var(--h-line);
+  }
+  .step-n {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--h-text-2);
+  }
+  .step h3 {
+    margin-top: 12px;
+  }
+
+  .posts {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .post {
+    display: flex;
+    flex-direction: column;
+    background: var(--h-card);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--h-shadow);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .post:hover {
+    transform: translateY(-4px);
+  }
+  .post time {
+    font-size: 13px;
+    color: var(--h-text-2);
+  }
+  .post h3 {
+    margin-top: 10px;
+    font-size: 21px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .post p {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--h-text-2);
+    flex: 1;
+  }
+  .post .link-arrow {
+    margin-top: 20px;
+  }
+  .posts:has(.post:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .posts:has(.post:only-child) .post {
+    max-width: 640px;
+  }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    width: min(calc(100% - 44px), calc(var(--max) - 44px));
+    margin: clamp(80px, 11vw, 136px) auto 0;
+    padding: clamp(56px, 8vw, 96px) 24px;
+    text-align: center;
+    background: var(--h-bg-alt);
+    border-radius: 32px;
+    border: 1px solid var(--h-line);
+  }
+  .cta p {
+    margin: 14px 0 32px;
+    font-size: clamp(17px, 2vw, 21px);
+    color: var(--h-text-2);
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 56px 22px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 12px;
+    color: var(--h-text-2);
+  }
+  .footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  .footer a:hover {
+    color: var(--h-text);
+  }
+
+  /* ---------- Reveal animation ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reveal:global(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+  .grid-3 .reveal:nth-child(2),
+  .steps .reveal:nth-child(2),
+  .posts .reveal:nth-child(2) {
+    transition-delay: 0.08s;
+  }
+  .grid-3 .reveal:nth-child(3),
+  .steps .reveal:nth-child(3),
+  .posts .reveal:nth-child(3) {
+    transition-delay: 0.16s;
+  }
+  .hero .reveal:nth-child(3) {
+    transition-delay: 0.08s;
+  }
+  .hero .reveal:nth-child(4) {
+    transition-delay: 0.16s;
+  }
+  .hero .reveal:nth-child(5) {
+    transition-delay: 0.24s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .card,
+    .post {
+      transition: none;
+    }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .grid-3,
+    .steps,
+    .posts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .nav-inner {
+      padding: 0 16px;
+    }
+    .nav-links {
+      gap: 14px;
+    }
+    .hide-xs {
+      display: none;
+    }
+    .hero,
+    .section,
+    .footer {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .cta {
+      width: calc(100% - 32px);
+    }
+  }
+</style>
