@@ -6,8 +6,6 @@ description: "1 à 2 phrases. C'est le texte affiché sous le titre dans l'aper�
 pubDatetime: 2026-01-01T09:00:00+01:00
 featured: false
 draft: true # passe à false pour publier
-tags:
-  - tag1
 ---
 
 Introduction…

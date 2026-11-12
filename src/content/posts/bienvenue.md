@@ -4,9 +4,6 @@ description: "Je me lance en freelance et je commence à écrire. Voici pourquoi
 pubDatetime: 2026-11-12T09:00:00+01:00
 featured: true
 draft: false
-tags:
-  - freelance
-  - meta
 ---
 
 Je viens de me lancer en freelance, et j'ai décidé d'écrire régulièrement.

@@ -8,7 +8,7 @@ Construit avec [Astro](https://astro.build/) et le thème [AstroPaper](https://g
 
 1. Copie `src/content/posts/_modele-article.md` en `src/content/posts/mon-article.md`
    (le nom du fichier devient l'URL : `/posts/mon-article/`).
-2. Remplis l'en-tête (`title`, `description`, `pubDatetime`, `tags`) et passe `draft: false`.
+2. Remplis l'en-tête (`title`, `description`, `pubDatetime`) et passe `draft: false`.
 3. Prévisualise en local, puis publie :
 
 ```bash
