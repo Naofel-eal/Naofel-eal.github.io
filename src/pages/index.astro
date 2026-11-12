@@ -145,18 +145,21 @@ const experiences = [
     company: "TotalEnergies",
     team: "Digital Factory",
     role: "Ingénieur full-stack senior · Tech lead par intérim",
+    why: "Des millions de données par jour remontées des plateformes pétrolières, à fiabiliser et exploiter en production.",
     years: "2024 – 2026",
   },
   {
     company: "APRR",
     team: "Autoroutes Paris-Rhin-Rhône",
     role: "Ingénieur full-stack",
+    why: "Du big data temps réel, issu de capteurs répartis tout le long du réseau autoroutier.",
     years: "2023 – 2024",
   },
   {
     company: "CYSEC",
     team: "Lausanne",
     role: "Ingénieur cybersécurité",
+    why: "Le secteur aérospatial, où la sécurité ne peut jamais se faire au détriment de la performance.",
     years: "2023",
   },
 ];
@@ -267,11 +270,11 @@ const experiences = [
             >
           </h2>
           <p class="lead-text">
-            Un orchestrateur d'agents IA autonomes que j'ai conçu seul, déployé
-            dans 80&nbsp;% des équipes de la TotalEnergies Digital Factory. Un
-            ticket arrive dans Jira&nbsp;: l'agent le prend en charge, code,
-            ouvre la pull request sur GitHub et suit les retours jusqu'à la
-            validation. L'humain reste dans la boucle à chaque étape.
+            Un orchestrateur d'agents IA autonomes que j'ai conçu, déployé dans
+            80&nbsp;% des équipes de la TotalEnergies Digital Factory. Un ticket
+            arrive dans Jira&nbsp;: l'agent le prend en charge, code, ouvre la
+            pull request sur GitHub et suit les retours jusqu'à la validation.
+            L'humain reste dans la boucle à chaque étape.
           </p>
         </div>
         <ol class="phases">
@@ -334,7 +337,10 @@ const experiences = [
                 <p class="xp-company">{e.company}</p>
                 <p class="xp-team">{e.team}</p>
               </div>
-              <p class="xp-role">{e.role}</p>
+              <div class="xp-detail">
+                <p class="xp-role">{e.role}</p>
+                <p class="xp-why">{e.why}</p>
+              </div>
               <p class="xp-years">{e.years}</p>
             </li>
           ))
@@ -816,6 +822,13 @@ const experiences = [
   }
   .xp-role {
     font-size: 16px;
+    font-weight: 500;
+  }
+  .xp-why {
+    margin-top: 4px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted-foreground);
   }
   .xp-years {
     text-align: end;
@@ -850,10 +863,11 @@ const experiences = [
     .xp-row {
       grid-template-columns: minmax(0, 1fr) 100px;
     }
-    .xp-role {
+    .xp-detail {
       grid-column: 1 / -1;
       grid-row: 2;
-      color: var(--muted-foreground);
+    }
+    .xp-role {
       font-size: 15px;
     }
   }
