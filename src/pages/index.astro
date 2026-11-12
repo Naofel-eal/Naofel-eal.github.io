@@ -86,8 +86,13 @@ const pandaPhases = [
   },
   {
     n: "03",
-    title: "Itérer",
-    text: "Chaque commentaire de revue ou retour métier relance un cycle ciblé.",
+    title: "Livrer avec des agents, sous contrôle",
+    text: "Les agents implémentent en TDD, et chaque livraison passe des contrôles automatisés : agents reviewers sur des conventions de code définies, 100 % de couverture sur le domaine, tests d'intégration et end-to-end. Des skills et des MCP permettent à l'agent de vérifier son travail avant la validation humaine.",
+  },
+  {
+    n: "04",
+    title: "Documenter comme on code",
+    text: "La documentation est versionnée avec le code et évolue avec lui : c'est le contexte le plus fiable qu'on puisse donner à un agent. Un workflow GitHub la publie ensuite automatiquement dans Confluence.",
   },
 ];
 
@@ -258,13 +263,6 @@ const experiences = [
               <span class="step-n">{s.n}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-              {s.tags && (
-                <ul class="card-tags">
-                  {s.tags.map(t => (
-                    <li>{t}</li>
-                  ))}
-                </ul>
-              )}
             </li>
           ))
         }
