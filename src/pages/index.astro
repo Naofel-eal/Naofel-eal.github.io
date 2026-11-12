@@ -149,6 +149,12 @@ const steps = [
 
     <!-- CTA -->
     <section class="cta reveal">
+      <div class="cta-aura" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+      </div>
+      <p class="eyebrow">Travaillons ensemble</p>
       <h2 class="display-title">Un projet en tête&nbsp;?</h2>
       <p class="lead-text">
         Parlons de vos besoins, simplement et sans engagement.
@@ -295,16 +301,92 @@ const steps = [
 
   /* ---------- CTA ---------- */
   .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     width: min(calc(100% - 40px), calc(var(--max-wide) - 40px));
     margin: clamp(80px, 11vw, 136px) auto 0;
-    padding: clamp(56px, 8vw, 96px) 24px;
+    padding: clamp(64px, 9vw, 112px) 24px;
     text-align: center;
-    background: var(--surface-alt);
+    background: var(--surface);
     border-radius: 32px;
     border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
   }
-  .cta p {
-    margin: 14px 0 32px;
+  .cta h2 {
+    margin-top: 10px;
+  }
+  .cta p.lead-text {
+    margin: 14px auto 32px;
+    max-width: 30rem;
+  }
+
+  /* Halos de couleur flous derrière le contenu */
+  .cta-aura {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    width: 46%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: var(--blob-opacity, 0.35);
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .blob-1 {
+    top: -30%;
+    left: -8%;
+    background: #0071e3;
+  }
+  .blob-2 {
+    bottom: -35%;
+    right: -6%;
+    background: #e0457b;
+    animation-delay: -6s;
+    animation-duration: 22s;
+  }
+  .blob-3 {
+    top: 10%;
+    left: 34%;
+    width: 34%;
+    background: #7a5cff;
+    opacity: calc(var(--blob-opacity, 0.35) * 0.8);
+    animation-delay: -12s;
+    animation-duration: 26s;
+  }
+  :global([data-theme="dark"]) .cta {
+    --blob-opacity: 0.45;
+    background: #0a0a0c;
+  }
+  :global([data-theme="dark"]) .blob-1 {
+    background: #2997ff;
+  }
+  :global([data-theme="dark"]) .blob-2 {
+    background: #ff6b9a;
+  }
+  :global([data-theme="dark"]) .blob-3 {
+    background: #a78bfa;
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(6%, 8%) scale(1.08);
+    }
+    100% {
+      transform: translate(-6%, -4%) scale(0.95);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blob {
+      animation: none;
+    }
   }
 
   /* ---------- Staggered reveal ---------- */
