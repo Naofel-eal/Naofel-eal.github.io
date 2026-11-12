@@ -209,8 +209,9 @@
 }
 .copy-code {
   position: absolute;
-  top: 10px;
-  inset-inline-end: 10px;
+  /* Centré sur la bordure supérieure du bloc (hauteur 30px → -15px). */
+  top: -15px;
+  inset-inline-end: 14px;
   z-index: 2;
   display: inline-flex;
   align-items: center;
@@ -223,36 +224,18 @@
   font-weight: 500;
   letter-spacing: 0;
   color: var(--muted-foreground);
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  background: var(--surface);
   border: 1px solid var(--border);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  opacity: 0;
-  transform: translateY(-4px) scale(0.96);
+  box-shadow: var(--shadow-card);
   transition:
-    opacity 0.25s var(--ease-out),
-    transform 0.25s var(--ease-out),
+    transform 0.2s var(--ease-out),
     color 0.2s ease,
     background 0.2s ease,
     border-color 0.2s ease;
 }
-.code-wrapper:hover .copy-code,
-.code-wrapper:focus-within .copy-code,
-.copy-code.is-copied,
-.copy-code.is-error {
-  opacity: 1;
-  transform: none;
-}
-@media (hover: none) {
-  .copy-code {
-    opacity: 1;
-    transform: none;
-  }
-}
 .copy-code:hover {
   color: var(--foreground);
-  background: var(--surface);
+  transform: translateY(-1px);
 }
 .copy-code:active {
   transform: scale(0.94);

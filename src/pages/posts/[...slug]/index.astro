@@ -240,16 +240,9 @@ const ogImage = ogImageUrl
       const wrapper = document.createElement("div");
       wrapper.className = "code-wrapper";
 
-      const computedStyle = getComputedStyle(codeBlock);
-      const fileNameOffset = computedStyle
-        .getPropertyValue("--file-name-offset")
-        .trim();
-
       const copyButton = document.createElement("button");
       copyButton.type = "button";
       copyButton.className = "copy-code";
-      if (fileNameOffset)
-        copyButton.style.top = `calc(${fileNameOffset} + 10px)`;
       copyButton.setAttribute("aria-label", "Copier le code");
       copyButton.innerHTML = `
         <span class="copy-icon" aria-hidden="true">
