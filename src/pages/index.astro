@@ -21,10 +21,17 @@ const contactAttrs = linkedin ? { target: "_blank", rel: "noopener" } : {};
 const pandaUrl = "https://github.com/Naofel-eal/PANDA";
 
 const stats = [
-  { value: "70", unit: "tickets", label: "livrés en un mois par un agent IA" },
-  { value: "~500", unit: "€", label: "de coûts d'API sur ce même mois" },
-  { value: "3", unit: "équipes", label: "utilisent PANDA en production" },
   { value: "Major", unit: "", label: "de promotion, Polytech Dijon" },
+  {
+    value: "2×",
+    unit: "",
+    label: "vainqueur du CTF TotalEnergies (2024, 2025)",
+  },
+  {
+    value: "Senior",
+    unit: "",
+    label: "niveau évalué par la direction technique de TotalEnergies",
+  },
 ];
 
 const services = [
@@ -33,7 +40,11 @@ const services = [
     text: "Conception d'agents IA autonomes intégrés à votre cycle de développement : ils prennent un ticket, implémentent, ouvrent la pull request et traitent la revue.",
     tags: [
       "Orchestration d'agents",
+      "Sous-agents",
       "Context engineering",
+      "Harness engineering",
+      "MCP",
+      "Skills",
       "Human-in-the-loop",
     ],
     icon: "M12 3v2m0 14v2M5 12H3m18 0h-2M7.05 7.05 5.636 5.636m12.728 12.728-1.414-1.414M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z",
@@ -51,7 +62,7 @@ const services = [
   {
     title: "Développement full-stack",
     text: "Des produits livrés de bout en bout, du cadrage à la production, avec une CI/CD fiable et un code testé.",
-    tags: ["Java · Spring Boot · Quarkus", "Angular", "Azure · Docker"],
+    tags: ["Java · Spring Boot · Quarkus", "Angular", "Azure · AWS", "Docker"],
     icon: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h18M7 7h.01M10 7h.01",
   },
   {
@@ -95,6 +106,24 @@ const steps = [
     n: "03",
     title: "Livrer avec des agents",
     text: "Les agents IA implémentent dans ce cadre, sous contrôle humain. L'architecture garantit la qualité.",
+  },
+];
+
+const security = [
+  {
+    title: "Connexions satellites sécurisées",
+    text: "Chez CYSEC, sécurisation de connexions satellites en orbite basse via Starlink : chiffrement embarqué sur routeur, gestion des clés sur TPM et VPN haute performance.",
+    icon: "M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Zm-3 9 2 2 4-4",
+  },
+  {
+    title: "2× vainqueur du CTF TotalEnergies",
+    text: "1ʳᵉ place en 2024 puis en 2025 : vulnérabilités web, cryptographie, rétro-ingénierie et OSINT.",
+    icon: "M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0V4Zm0 2H4v1a3 3 0 0 0 3 3m10-4h3v1a3 3 0 0 1-3 3",
+  },
+  {
+    title: "Bug bounty",
+    text: "Chasse aux vulnérabilités sur des programmes de bug bounty depuis 2026, pour garder un regard d'attaquant sur le code que je conçois.",
+    icon: "M8 8a4 4 0 1 1 8 0v1H8V8Zm-2 3h12v3a6 6 0 0 1-12 0v-3Zm6 0v9M3 13h3m12 0h3M4 7l2.5 2M20 7l-2.5 2M4 20l2.5-2.5M20 20l-2.5-2.5",
   },
 ];
 
@@ -144,7 +173,7 @@ const experiences = [
         <a href={contactUrl} class="btn-primary" {...contactAttrs}
           >Discutons de votre projet</a
         >
-        <a href="#panda" class="link-arrow">Découvrir PANDA</a>
+        <a href={url("about")} class="link-arrow">Découvrir mon parcours</a>
       </div>
     </section>
 
@@ -196,14 +225,15 @@ const experiences = [
     <section id="panda" class="section wide-layout">
       <div class="case surface-card reveal">
         <div class="case-head">
-          <p class="eyebrow">Étude de cas · TotalEnergies</p>
+          <p class="eyebrow">Étude de cas</p>
           <h2 class="display-title">
             PANDA transforme vos tickets Jira en <span class="gradient-text"
               >pull requests.</span
             >
           </h2>
           <p class="lead-text">
-            Un orchestrateur d'agents IA autonomes que j'ai conçu seul. Un
+            Un orchestrateur d'agents IA autonomes que j'ai conçu seul, déployé
+            dans 80&nbsp;% des équipes de la TotalEnergies Digital Factory. Un
             ticket arrive dans Jira&nbsp;: l'agent le prend en charge, code,
             ouvre la pull request sur GitHub et suit les retours jusqu'à la
             validation. L'humain reste dans la boucle à chaque étape.
@@ -222,8 +252,8 @@ const experiences = [
         </ol>
         <div class="case-foot">
           <p>
-            <strong>Résultat&nbsp;:</strong> 70 tickets livrés en un mois pour environ
-            500&nbsp;€ d'API. Adopté en production par 3 équipes, en cours de généralisation.
+            <strong>Résultat&nbsp;:</strong> plus de 400 tickets livrés en quelques
+            mois, dans 80&nbsp;% des équipes de la Digital Factory.
           </p>
           <a href={pandaUrl} class="link-arrow" target="_blank" rel="noopener"
             >Voir le projet sur GitHub</a
@@ -253,6 +283,31 @@ const experiences = [
           ))
         }
       </ol>
+    </section>
+
+    <!-- Cybersécurité -->
+    <section class="section wide-layout">
+      <p class="eyebrow reveal">Cybersécurité</p>
+      <h2 class="display-title reveal">La sécurité, dès la conception.</h2>
+      <p class="lead-text section-lead reveal">
+        Un code bien architecturé est un code plus facile à sécuriser. Je garde
+        un regard d'attaquant sur tout ce que je construis, agents IA compris.
+      </p>
+      <div class="grid-3">
+        {
+          security.map(s => (
+            <article class="surface-card is-link card reveal">
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d={s.icon} />
+                </svg>
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </article>
+          ))
+        }
+      </div>
     </section>
 
     <!-- Parcours -->
@@ -583,7 +638,7 @@ const experiences = [
   /* ---------- Stats ---------- */
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
     padding: 32px 0;
     border-top: 1px solid var(--border);
@@ -733,7 +788,6 @@ const experiences = [
   }
 
   @media (max-width: 860px) {
-    .stats,
     .grid-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -742,6 +796,10 @@ const experiences = [
     }
   }
   @media (max-width: 640px) {
+    .stats {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
     .grid-2 {
       grid-template-columns: minmax(0, 1fr);
     }

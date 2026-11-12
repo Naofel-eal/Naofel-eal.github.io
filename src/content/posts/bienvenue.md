@@ -12,9 +12,9 @@ Je m'appelle Naofel, je suis ingénieur logiciel senior, et je me lance en freel
 
 À la Digital Factory de TotalEnergies, j'ai conçu **PANDA**, un orchestrateur d'agents IA autonomes. Le principe est simple : un ticket arrive dans Jira, un agent le prend en charge, explore le code, implémente le changement, ouvre la pull request sur GitHub, puis traite les commentaires de revue et les retours métier jusqu'à la validation.
 
-Sur un mois, PANDA a livré **70 tickets pour environ 500 € de coûts d'API**. Il est aujourd'hui utilisé en production par trois équipes.
+Sur son premier mois, PANDA a livré **70 tickets pour environ 500 € de coûts d'API**. Depuis, il en a livré **plus de 400** et il est déployé dans **80 % des équipes de la Digital Factory**.
 
-Mais le chiffre le plus intéressant n'est pas celui-là.
+Mais ce ne sont pas ces chiffres qui m'ont le plus appris.
 
 ## Ce que les agents m'ont vraiment appris
 
