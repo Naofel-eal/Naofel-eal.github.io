@@ -230,46 +230,72 @@ const ogImage = ogImageUrl
   addHeadingLinks();
 
   function attachCopyButtons() {
-    const copyButtonLabel = "Copier";
+    const LABEL = "Copier";
+    const LABEL_DONE = "Copié";
+    const LABEL_FAIL = "Échec";
+    const RESET_DELAY = 1800;
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
       const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
+      wrapper.className = "code-wrapper";
 
       const computedStyle = getComputedStyle(codeBlock);
-      const hasFileNameOffset =
-        computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
-
-      const topClass = hasFileNameOffset
-        ? "top-(--file-name-offset)"
-        : "-top-3";
+      const fileNameOffset = computedStyle
+        .getPropertyValue("--file-name-offset")
+        .trim();
 
       const copyButton = document.createElement("button");
-      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
-      copyButton.innerHTML = copyButtonLabel;
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
+      copyButton.type = "button";
+      copyButton.className = "copy-code";
+      if (fileNameOffset)
+        copyButton.style.top = `calc(${fileNameOffset} + 10px)`;
+      copyButton.setAttribute("aria-label", "Copier le code");
+      copyButton.innerHTML = `
+        <span class="copy-icon" aria-hidden="true">
+          <svg class="icon-copy" viewBox="0 0 24 24">
+            <rect x="8" y="8" width="12" height="12" rx="2.5" />
+            <path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" />
+          </svg>
+          <svg class="icon-check" viewBox="0 0 24 24">
+            <path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" />
+          </svg>
+        </span>
+        <span class="copy-label">${LABEL}</span>
+        <span class="sr-only" aria-live="polite"></span>`;
 
+      codeBlock.setAttribute("tabindex", "0");
       codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
       wrapper.appendChild(codeBlock);
+      wrapper.appendChild(copyButton);
 
+      let resetTimer;
       copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
+        const label = copyButton.querySelector(".copy-label");
+        const live = copyButton.querySelector("[aria-live]");
+        clearTimeout(resetTimer);
+        copyButton.classList.remove("is-copied", "is-error");
+        // Force un reflow pour pouvoir rejouer l'animation à chaque clic.
+        void copyButton.offsetWidth;
+
+        try {
+          const text = codeBlock.querySelector("code")?.innerText ?? "";
+          await navigator.clipboard.writeText(text);
+          copyButton.classList.add("is-copied");
+          label.textContent = LABEL_DONE;
+          live.textContent = "Code copié dans le presse-papiers";
+        } catch {
+          copyButton.classList.add("is-error");
+          label.textContent = LABEL_FAIL;
+          live.textContent = "Impossible de copier le code";
+        }
+
+        resetTimer = setTimeout(() => {
+          copyButton.classList.remove("is-copied", "is-error");
+          label.textContent = LABEL;
+          live.textContent = "";
+        }, RESET_DELAY);
       });
-    }
-
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      button.innerText = "Copié";
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
     }
   }
   attachCopyButtons();

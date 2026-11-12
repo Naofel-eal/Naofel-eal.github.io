@@ -202,3 +202,172 @@
 :target {
   scroll-margin-block: 72px;
 }
+
+/* ---------- Bouton « Copier » des blocs de code ---------- */
+.code-wrapper {
+  position: relative;
+}
+.copy-code {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 10px;
+  border-radius: 980px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  border: 1px solid var(--border);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.96);
+  transition:
+    opacity 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out),
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+.code-wrapper:hover .copy-code,
+.code-wrapper:focus-within .copy-code,
+.copy-code.is-copied,
+.copy-code.is-error {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .copy-code {
+    opacity: 1;
+    transform: none;
+  }
+}
+.copy-code:hover {
+  color: var(--foreground);
+  background: var(--surface);
+}
+.copy-code:active {
+  transform: scale(0.94);
+}
+
+.copy-icon {
+  position: relative;
+  display: grid;
+  width: 15px;
+  height: 15px;
+}
+.copy-icon svg {
+  grid-area: 1 / 1;
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity 0.2s ease,
+    transform 0.35s var(--ease-out);
+}
+.icon-check {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.icon-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.copy-label {
+  display: inline-block;
+}
+
+/* État « copié » */
+.copy-code.is-copied {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 35%, transparent);
+  background: color-mix(in srgb, var(--ok) 12%, var(--surface));
+  animation: copy-pop 0.45s var(--ease-out);
+}
+.copy-code.is-copied .icon-copy {
+  opacity: 0;
+  transform: scale(0.6) rotate(-20deg);
+}
+.copy-code.is-copied .icon-check {
+  opacity: 1;
+  transform: none;
+}
+.copy-code.is-copied .icon-check path {
+  animation: copy-draw 0.4s 0.08s var(--ease-out) forwards;
+}
+.copy-code.is-copied .copy-label,
+.copy-code.is-error .copy-label {
+  animation: copy-label-in 0.3s var(--ease-out);
+}
+
+/* État « échec » */
+.copy-code.is-error {
+  color: #ff453a;
+  border-color: color-mix(in srgb, #ff453a 35%, transparent);
+  animation: copy-shake 0.4s ease;
+}
+
+@keyframes copy-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes copy-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes copy-label-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes copy-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-code,
+  .copy-code.is-copied,
+  .copy-code.is-error,
+  .copy-code .copy-label,
+  .copy-icon svg {
+    animation: none !important;
+    transition: none;
+  }
+  .copy-code.is-copied .icon-check path {
+    stroke-dashoffset: 0;
+  }
+}
