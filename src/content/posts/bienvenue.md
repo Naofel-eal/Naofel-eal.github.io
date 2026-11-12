@@ -44,4 +44,4 @@ C'est exactement à cette intersection que je veux travailler avec mes clients :
 - De l'architecture hexagonale avec du vrai code.
 - Et quelques réflexions sur la vie de freelance.
 
-Si vous voulez intégrer des agents IA dans votre équipe, ou si votre code a besoin d'une architecture qui tienne la route, [écrivez-moi sur LinkedIn](https://www.linkedin.com/in/naofel-el-alouani-83a947197/).
+Si vous voulez intégrer des agents IA dans votre équipe, ou si votre code a besoin d'une architecture qui tienne la route, [parlons-en](/contact/).

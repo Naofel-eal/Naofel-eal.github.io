@@ -13,10 +13,8 @@ const url = (path: string) => getRelativeLocaleUrl(locale, path);
 
 const posts = getSortedPosts(await getCollection("posts")).slice(0, 3);
 
-// Les boutons de contact pointent vers LinkedIn (astro-paper.config.ts).
-const linkedin = config.socials.find(s => s.name === "linkedin")?.url;
-const contactUrl = linkedin ?? url("about");
-const contactAttrs = linkedin ? { target: "_blank", rel: "noopener" } : {};
+// Tous les boutons de contact mènent à la page /contact.
+const contactUrl = url("contact");
 
 const pandaUrl = "https://github.com/Naofel-eal/PANDA";
 
@@ -185,9 +183,7 @@ const experiences = [
         <strong>Domain-Driven Design</strong>, architecture hexagonale et BDD.
       </p>
       <div class="actions reveal">
-        <a href={contactUrl} class="btn-primary" {...contactAttrs}
-          >Discutons de votre projet</a
-        >
+        <a href={contactUrl} class="btn-primary">Discutons de votre projet</a>
         <a href={url("about")} class="link-arrow">Découvrir mon parcours</a>
       </div>
     </section>
@@ -383,8 +379,7 @@ const experiences = [
         Agents IA, refonte d'architecture ou nouveau produit&nbsp;: parlons-en,
         simplement et sans engagement.
       </p>
-      <a href={contactUrl} class="btn-primary" {...contactAttrs}>Me contacter</a
-      >
+      <a href={contactUrl} class="btn-primary">Me contacter</a>
     </section>
   </main>
 

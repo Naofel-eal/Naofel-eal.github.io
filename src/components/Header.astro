@@ -4,7 +4,7 @@ import { stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
-const { site, features, socials } = config;
+const { site, features } = config;
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
@@ -21,11 +21,7 @@ const isActive = (path: string) =>
   currentPath.split("/").filter(Boolean)[0] ===
   path.split("/").filter(Boolean)[0];
 
-// « Contact » pointe vers LinkedIn dès que l'URL est renseignée dans
-// astro-paper.config.ts, sinon vers la page À propos.
-const linkedin = socials.find(s => s.name === "linkedin")?.url;
-const contactUrl = linkedin ?? url("about");
-const contactAttrs = linkedin ? { target: "_blank", rel: "noopener" } : {};
+const contactUrl = url("contact");
 
 const links = [
   { href: url("posts"), label: t.nav.posts, path: "/posts" },
@@ -57,7 +53,7 @@ const links = [
           ))
         }
         <li class="mobile-only">
-          <a href={contactUrl} {...contactAttrs}>Contact</a>
+          <a href={contactUrl}>Contact</a>
         </li>
       </ul>
 
@@ -97,7 +93,7 @@ const links = [
         )
       }
 
-      <a href={contactUrl} class="nav-cta" {...contactAttrs}>Contact</a>
+      <a href={contactUrl} class="nav-cta">Contact</a>
 
       <button
         id="menu-btn"

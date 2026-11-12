@@ -1,0 +1,595 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+// Coordonnées de contact. L'e-mail est découpé pour ne pas apparaître en clair
+// dans le HTML (protection simple contre les robots qui collectent les adresses).
+const email = { user: "naofel.eal", domain: "gmail.com" };
+const calendly = "https://calendly.com/naofel-eal/30min";
+const malt = "https://www.malt.fr/profile/naofelelalouani";
+const linkedin =
+  config.socials.find(s => s.name === "linkedin")?.url ??
+  "https://www.linkedin.com/in/naofel-el-alouani-83a947197/";
+
+const channels = [
+  {
+    id: "linkedin",
+    title: "LinkedIn",
+    text: "Pour échanger ou me suivre.",
+    href: linkedin,
+    cta: "Voir mon profil",
+    icon: "M8 11v5M8 8v.01M12 16v-5m4 5v-3a2 2 0 1 0-4 0M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7Z",
+  },
+  {
+    id: "malt",
+    title: "Malt",
+    text: "Pour contractualiser une mission via la plateforme.",
+    href: malt,
+    cta: "Voir mon profil Malt",
+    icon: "M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm4 0V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18",
+  },
+];
+
+const tips = [
+  {
+    title: "Le contexte",
+    text: "Votre produit, votre équipe et votre stack technique.",
+  },
+  {
+    title: "L'objectif",
+    text: "Intégrer des agents IA, refondre une architecture, lancer un produit…",
+  },
+  {
+    title: "Le calendrier",
+    text: "La date de démarrage souhaitée, la durée et le rythme de la mission.",
+  },
+];
+
+const missions = [
+  "IA agentique & agents de code",
+  "Architecture logicielle & DDD",
+  "Full-stack Java · Angular",
+  "Accompagnement d'équipe",
+  "Cybersécurité",
+];
+---
+
+<Layout
+  title={`Contact | ${config.site.title}`}
+  description="Contacter Naofel El Alouani, ingénieur logiciel senior freelance : prise de rendez-vous, e-mail, LinkedIn et Malt."
+>
+  <Header />
+
+  <main id="main-content" class="contact wide-layout">
+    <header class="contact-head">
+      <div class="glow" aria-hidden="true"></div>
+      <p class="pill reveal">
+        <span class="dot" aria-hidden="true"></span>
+        Disponible dès maintenant · Remote ou hybride
+      </p>
+      <h1 class="reveal">
+        Parlons de <span class="gradient-text">votre projet.</span>
+      </h1>
+      <p class="lead-text reveal">
+        La date de démarrage se cale ensemble, selon votre besoin. Choisissez le
+        moyen qui vous convient le mieux.
+      </p>
+    </header>
+
+    <!-- Rendez-vous : action principale -->
+    <section
+      class="booking surface-card reveal"
+      aria-labelledby="booking-title"
+    >
+      <span class="card-icon big" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M7 3v3m10-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 7v3l2 1"
+          ></path>
+        </svg>
+      </span>
+      <div class="booking-body">
+        <p class="eyebrow">Le plus rapide</p>
+        <h2 id="booking-title">Réservez un appel de 30 minutes.</h2>
+        <p>
+          Choisissez un créneau et on fait le point sur votre besoin. Gratuit et
+          sans engagement.
+        </p>
+      </div>
+      <a href={calendly} class="btn-primary" target="_blank" rel="noopener"
+        >Choisir un créneau</a
+      >
+    </section>
+
+    <!-- Autres canaux -->
+    <section class="channels" aria-label="Autres moyens de contact">
+      <article class="surface-card channel reveal">
+        <span class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm0 0 9 6 9-6"
+            ></path>
+          </svg>
+        </span>
+        <h3>E-mail</h3>
+        <p
+          class="email-address"
+          data-user={email.user}
+          data-domain={email.domain}
+        >
+          <noscript>{email.user} [arobase] {email.domain}</noscript>
+        </p>
+        <div class="email-actions">
+          <button type="button" class="copy-email" data-copy-email>
+            <span class="ce-icon" aria-hidden="true">
+              <svg class="i-copy" viewBox="0 0 24 24">
+                <rect x="8" y="8" width="12" height="12" rx="2.5"></rect>
+                <path
+                  d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"
+                ></path>
+              </svg>
+              <svg class="i-check" viewBox="0 0 24 24">
+                <path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"></path>
+              </svg>
+            </span>
+            <span class="ce-label">Copier l'adresse</span>
+            <span class="sr-only" aria-live="polite"></span>
+          </button>
+          <a class="link-arrow channel-link" data-mailto href="#">Écrire</a>
+        </div>
+      </article>
+
+      {
+        channels.map(c => (
+          <article class="surface-card channel reveal">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d={c.icon} />
+              </svg>
+            </span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <a
+              href={c.href}
+              class="link-arrow channel-link"
+              target="_blank"
+              rel="noopener"
+            >
+              {c.cta}
+            </a>
+          </article>
+        ))
+      }
+    </section>
+
+    <!-- Conseils -->
+    <section class="tips reveal" aria-labelledby="tips-title">
+      <h2 id="tips-title" class="tips-title">
+        Pour une réponse rapide, précisez&nbsp;:
+      </h2>
+      <ol class="tips-list">
+        {
+          tips.map((t, i) => (
+            <li>
+              <span class="step-n">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{t.title}</h3>
+              <p>{t.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- Missions -->
+    <section class="missions reveal" aria-labelledby="missions-title">
+      <h2 id="missions-title" class="missions-title">
+        Les missions que je prends
+      </h2>
+      <ul class="missions-list">
+        {missions.map(m => <li>{m}</li>)}
+      </ul>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  function initContact() {
+    const addr = document.querySelector<HTMLElement>(".email-address");
+    if (!addr) return;
+    const email = `${addr.dataset.user}@${addr.dataset.domain}`;
+    addr.textContent = email;
+
+    const mailto = document.querySelector<HTMLAnchorElement>("[data-mailto]");
+    if (mailto) mailto.href = `mailto:${email}`;
+
+    const btn = document.querySelector<HTMLButtonElement>("[data-copy-email]");
+    if (!btn) return;
+    const label = btn.querySelector(".ce-label");
+    const live = btn.querySelector("[aria-live]");
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    btn.addEventListener("click", async () => {
+      clearTimeout(timer);
+      btn.classList.remove("is-copied", "is-error");
+      void btn.offsetWidth; // rejoue l'animation à chaque clic
+      try {
+        await navigator.clipboard.writeText(email);
+        btn.classList.add("is-copied");
+        if (label) label.textContent = "Adresse copiée";
+        if (live) live.textContent = "Adresse e-mail copiée";
+      } catch {
+        btn.classList.add("is-error");
+        if (label) label.textContent = "Copie impossible";
+        if (live) live.textContent = "Impossible de copier l'adresse";
+      }
+      timer = setTimeout(() => {
+        btn.classList.remove("is-copied", "is-error");
+        if (label) label.textContent = "Copier l'adresse";
+        if (live) live.textContent = "";
+      }, 2000);
+    });
+  }
+  document.addEventListener("astro:page-load", initContact);
+</script>
+
+<style>
+  /* ---------- En-tête ---------- */
+  .contact-head {
+    position: relative;
+    padding-top: clamp(72px, 11vw, 136px);
+    padding-bottom: clamp(40px, 6vw, 64px);
+    text-align: center;
+  }
+  .glow {
+    position: absolute;
+    inset: -10% -20% auto;
+    height: 560px;
+    background: var(--glow);
+    filter: blur(20px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    background: var(--surface);
+    color: var(--muted-foreground);
+    font-size: 13px;
+    box-shadow: var(--shadow-card);
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+  }
+  .contact-head h1 {
+    margin-top: 24px;
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+  .contact-head .lead-text {
+    margin: 22px auto 0;
+    max-width: 34rem;
+  }
+  .contact-head > :nth-child(3) {
+    --reveal-delay: 0.08s;
+  }
+  .contact-head > :nth-child(4) {
+    --reveal-delay: 0.16s;
+  }
+
+  /* ---------- Icônes ---------- */
+  .card-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+  }
+  .card-icon.big {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+  .card-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .card-icon.big svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* ---------- Rendez-vous ---------- */
+  .booking {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: clamp(28px, 4vw, 44px);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+    background:
+      radial-gradient(
+        80% 120% at 0% 0%,
+        color-mix(in srgb, var(--accent) 9%, transparent),
+        transparent 60%
+      ),
+      var(--surface);
+  }
+  .booking-body {
+    flex: 1;
+  }
+  .booking h2 {
+    margin-top: 4px;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  .booking p:not(.eyebrow) {
+    margin-top: 8px;
+    color: var(--muted-foreground);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .booking .btn-primary {
+    flex: none;
+  }
+
+  /* ---------- Canaux ---------- */
+  .channels {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .channels > :nth-child(2) {
+    --reveal-delay: 0.08s;
+  }
+  .channels > :nth-child(3) {
+    --reveal-delay: 0.16s;
+  }
+  .channel {
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+  }
+  .channel h3 {
+    margin-top: 20px;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .channel p {
+    margin-top: 6px;
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  .channel .email-address {
+    color: var(--foreground);
+    font-weight: 500;
+    font-size: 16px;
+    word-break: break-all;
+  }
+  .channel-link {
+    margin-top: 18px;
+    font-size: 15px;
+  }
+  .email-actions {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+  }
+  .email-actions .channel-link {
+    margin-top: 0;
+  }
+
+  /* Bouton « Copier l'adresse » */
+  .copy-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 14px 0 12px;
+    border-radius: 980px;
+    background: var(--muted);
+    color: var(--foreground);
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s var(--ease-out);
+  }
+  .copy-email:hover {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+  }
+  .copy-email:active {
+    transform: scale(0.95);
+  }
+  .ce-icon {
+    display: grid;
+    width: 15px;
+    height: 15px;
+  }
+  .ce-icon svg {
+    grid-area: 1 / 1;
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition:
+      opacity 0.2s ease,
+      transform 0.35s var(--ease-out);
+  }
+  .i-check {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .i-check path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .copy-email.is-copied {
+    background: color-mix(in srgb, var(--ok) 14%, transparent);
+    color: var(--ok);
+    animation: ce-pop 0.45s var(--ease-out);
+  }
+  .copy-email.is-copied .i-copy {
+    opacity: 0;
+    transform: scale(0.6) rotate(-20deg);
+  }
+  .copy-email.is-copied .i-check {
+    opacity: 1;
+    transform: none;
+  }
+  .copy-email.is-copied .i-check path {
+    animation: ce-draw 0.4s 0.08s var(--ease-out) forwards;
+  }
+  .copy-email.is-copied .ce-label,
+  .copy-email.is-error .ce-label {
+    animation: ce-label 0.3s var(--ease-out);
+  }
+  .copy-email.is-error {
+    color: #ff453a;
+    background: color-mix(in srgb, #ff453a 12%, transparent);
+    animation: ce-shake 0.4s ease;
+  }
+  @keyframes ce-pop {
+    40% {
+      transform: scale(1.06);
+    }
+  }
+  @keyframes ce-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes ce-label {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+  @keyframes ce-shake {
+    25% {
+      transform: translateX(-3px);
+    }
+    75% {
+      transform: translateX(3px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .copy-email,
+    .copy-email .ce-label,
+    .ce-icon svg {
+      animation: none !important;
+      transition: none;
+    }
+    .copy-email.is-copied .i-check path {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ---------- Conseils ---------- */
+  .tips {
+    margin-top: clamp(64px, 9vw, 104px);
+  }
+  .tips-title,
+  .missions-title {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .tips-list {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .tips-list li {
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .step-n {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+  }
+  .tips-list h3 {
+    margin-top: 10px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .tips-list p {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted-foreground);
+  }
+
+  /* ---------- Missions ---------- */
+  .missions {
+    margin-top: clamp(56px, 8vw, 88px);
+  }
+  .missions-list {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .missions-list li {
+    padding: 8px 16px;
+    border-radius: 980px;
+    background: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .channels {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tips-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .booking {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+  }
+</style>
