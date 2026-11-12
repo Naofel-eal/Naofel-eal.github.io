@@ -13,47 +13,109 @@ const url = (path: string) => getRelativeLocaleUrl(locale, path);
 
 const posts = getSortedPosts(await getCollection("posts")).slice(0, 3);
 
-// Les boutons de contact pointent vers LinkedIn dès que l'URL est renseignée
-// dans astro-paper.config.ts, sinon vers la page À propos.
+// Les boutons de contact pointent vers LinkedIn (astro-paper.config.ts).
 const linkedin = config.socials.find(s => s.name === "linkedin")?.url;
 const contactUrl = linkedin ?? url("about");
 const contactAttrs = linkedin ? { target: "_blank", rel: "noopener" } : {};
 
-// TODO : adapte ces trois blocs à tes services réels.
+const pandaUrl = "https://github.com/Naofel-eal/PANDA";
+
+const stats = [
+  { value: "70", unit: "tickets", label: "livrés en un mois par un agent IA" },
+  { value: "~500", unit: "€", label: "de coûts d'API sur ce même mois" },
+  { value: "3", unit: "équipes", label: "utilisent PANDA en production" },
+  { value: "Major", unit: "", label: "de promotion, Polytech Dijon" },
+];
+
 const services = [
   {
-    title: "Applications web",
-    text: "Des interfaces rapides, accessibles et soignées, du prototype à la mise en production.",
-    icon: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h18M7 7h.01M10 7h.01",
+    title: "IA agentique & agents de code",
+    text: "Conception d'agents IA autonomes intégrés à votre cycle de développement : ils prennent un ticket, implémentent, ouvrent la pull request et traitent la revue.",
+    tags: [
+      "Orchestration d'agents",
+      "Context engineering",
+      "Human-in-the-loop",
+    ],
+    icon: "M12 3v2m0 14v2M5 12H3m18 0h-2M7.05 7.05 5.636 5.636m12.728 12.728-1.414-1.414M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z",
   },
   {
-    title: "API & architecture",
-    text: "Des fondations solides et lisibles, pensées pour évoluer avec votre produit sans dette inutile.",
+    title: "Architecture logicielle & DDD",
+    text: "Modélisation du domaine métier et architectures qui durent. Refonte de systèmes existants pour réduire la dette technique sans tout réécrire.",
+    tags: [
+      "Domain-Driven Design",
+      "Architecture hexagonale",
+      "Clean Architecture",
+    ],
     icon: "M12 3 3 7.5l9 4.5 9-4.5L12 3Zm-9 9 9 4.5 9-4.5M3 16.5 12 21l9-4.5",
   },
   {
-    title: "Conseil & audit",
-    text: "Un regard extérieur sur votre code et vos choix techniques, avec des recommandations concrètes.",
-    icon: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4-4",
+    title: "Développement full-stack",
+    text: "Des produits livrés de bout en bout, du cadrage à la production, avec une CI/CD fiable et un code testé.",
+    tags: ["Java · Spring Boot · Quarkus", "Angular", "Azure · Docker"],
+    icon: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm-1 4h18M7 7h.01M10 7h.01",
+  },
+  {
+    title: "Accompagnement & formation",
+    text: "Tech lead, revue de code et montée en compétence des équipes sur l'architecture, le BDD et le développement assisté par IA.",
+    tags: ["Tech lead", "BDD", "Développement augmenté par l'IA"],
+    icon: "M17 20h5v-2a3 3 0 0 0-5.36-1.86M17 20H7m10 0v-2c0-.66-.13-1.28-.36-1.86M7 20H2v-2a3 3 0 0 1 5.36-1.86M7 20v-2c0-.66.13-1.28.36-1.86m0 0a5 5 0 0 1 9.28 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
   },
 ];
 
-// TODO : adapte ta méthode de travail.
-const steps = [
+const pandaPhases = [
   {
     n: "01",
     title: "Comprendre",
-    text: "On clarifie ensemble le besoin, les contraintes et ce qui compte vraiment pour vos utilisateurs.",
+    text: "L'agent explore le code en lecture seule et valide sa compréhension du ticket.",
   },
   {
     n: "02",
-    title: "Construire",
-    text: "Des itérations courtes, des démos régulières et un code propre, testé et documenté.",
+    title: "Implémenter",
+    text: "Il modifie le code, lance les tests et ouvre la pull request.",
   },
   {
     n: "03",
-    title: "Livrer",
-    text: "Mise en production sereine, passation claire et accompagnement après le lancement.",
+    title: "Itérer",
+    text: "Chaque commentaire de revue ou retour métier relance un cycle ciblé.",
+  },
+];
+
+const steps = [
+  {
+    n: "01",
+    title: "Modéliser le domaine",
+    text: "Ateliers avec le métier pour établir un langage commun et découper le système en contextes clairs.",
+  },
+  {
+    n: "02",
+    title: "Spécifier par l'exemple",
+    text: "Le comportement attendu est écrit en scénarios BDD, lisibles par tous et exécutés comme tests.",
+  },
+  {
+    n: "03",
+    title: "Livrer avec des agents",
+    text: "Les agents IA implémentent dans ce cadre, sous contrôle humain. L'architecture garantit la qualité.",
+  },
+];
+
+const experiences = [
+  {
+    company: "TotalEnergies",
+    team: "Digital Factory",
+    role: "Ingénieur full-stack senior · Tech lead par intérim",
+    years: "2024 – 2026",
+  },
+  {
+    company: "APRR",
+    team: "Autoroutes Paris-Rhin-Rhône",
+    role: "Ingénieur full-stack",
+    years: "2023 – 2024",
+  },
+  {
+    company: "CYSEC",
+    team: "Lausanne",
+    role: "Ingénieur cybersécurité",
+    years: "2023",
   },
 ];
 ---
@@ -67,31 +129,48 @@ const steps = [
       <div class="glow" aria-hidden="true"></div>
       <p class="pill reveal">
         <span class="dot" aria-hidden="true"></span>
-        <span class="hide-xs">Développeur freelance ·</span> Disponible pour de nouvelles
-        missions
+        <span class="hide-xs">Ingénieur logiciel senior ·</span> Disponible en freelance
       </p>
       <h1 class="reveal">
-        Des produits numériques,<br />
-        <span class="gradient-text">pensés avec soin.</span>
+        Des agents IA qui livrent.<br />
+        <span class="gradient-text">Du code qui dure.</span>
       </h1>
       <p class="lead-text lead reveal">
-        J'accompagne les entreprises dans la conception et le développement de
-        leurs applications, avec un souci constant de la qualité, de la
-        simplicité et de l'expérience utilisateur.
+        J'aide les équipes tech à intégrer l'<strong>IA agentique</strong> dans leur
+        cycle de développement, sur des fondations solides&nbsp;:{" "}
+        <strong>Domain-Driven Design</strong>, architecture hexagonale et BDD.
       </p>
       <div class="actions reveal">
         <a href={contactUrl} class="btn-primary" {...contactAttrs}
-          >Démarrer un projet</a
+          >Discutons de votre projet</a
         >
-        <a href={url("posts")} class="link-arrow">Lire le blog</a>
+        <a href="#panda" class="link-arrow">Découvrir PANDA</a>
       </div>
     </section>
 
-    <!-- Services -->
+    <!-- Chiffres clés -->
+    <section class="wide-layout" aria-label="Chiffres clés">
+      <dl class="stats">
+        {
+          stats.map(s => (
+            <div class="stat reveal">
+              <dt class="sr-only">{s.label}</dt>
+              <dd class="stat-value">
+                {s.value}
+                {s.unit && <span class="stat-unit">{s.unit}</span>}
+              </dd>
+              <dd class="stat-label">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <!-- Expertise -->
     <section class="section wide-layout">
       <p class="eyebrow reveal">Expertise</p>
       <h2 class="display-title reveal">Ce que je fais.</h2>
-      <div class="grid-3">
+      <div class="grid-2">
         {
           services.map(s => (
             <article class="surface-card is-link card reveal">
@@ -102,16 +181,67 @@ const steps = [
               </span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
+              <ul class="card-tags">
+                {s.tags.map(t => (
+                  <li>{t}</li>
+                ))}
+              </ul>
             </article>
           ))
         }
       </div>
     </section>
 
+    <!-- Étude de cas PANDA -->
+    <section id="panda" class="section wide-layout">
+      <div class="case surface-card reveal">
+        <div class="case-head">
+          <p class="eyebrow">Étude de cas · TotalEnergies</p>
+          <h2 class="display-title">
+            PANDA transforme vos tickets Jira en <span class="gradient-text"
+              >pull requests.</span
+            >
+          </h2>
+          <p class="lead-text">
+            Un orchestrateur d'agents IA autonomes que j'ai conçu seul. Un
+            ticket arrive dans Jira&nbsp;: l'agent le prend en charge, code,
+            ouvre la pull request sur GitHub et suit les retours jusqu'à la
+            validation. L'humain reste dans la boucle à chaque étape.
+          </p>
+        </div>
+        <ol class="phases">
+          {
+            pandaPhases.map(p => (
+              <li class="phase">
+                <span class="step-n">{p.n}</span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="case-foot">
+          <p>
+            <strong>Résultat&nbsp;:</strong> 70 tickets livrés en un mois pour environ
+            500&nbsp;€ d'API. Adopté en production par 3 équipes, en cours de généralisation.
+          </p>
+          <a href={pandaUrl} class="link-arrow" target="_blank" rel="noopener"
+            >Voir le projet sur GitHub</a
+          >
+        </div>
+      </div>
+    </section>
+
     <!-- Méthode -->
     <section class="section wide-layout">
       <p class="eyebrow reveal">Méthode</p>
-      <h2 class="display-title reveal">Simple. Transparent. Efficace.</h2>
+      <h2 class="display-title reveal">
+        Un agent n'est bon que si son contexte l'est.
+      </h2>
+      <p class="lead-text section-lead reveal">
+        Le DDD et le BDD produisent exactement ce dont un agent a besoin&nbsp;:
+        un vocabulaire métier précis et des comportements attendus vérifiables.
+      </p>
       <ol class="grid-3 steps">
         {
           steps.map(s => (
@@ -123,6 +253,29 @@ const steps = [
           ))
         }
       </ol>
+    </section>
+
+    <!-- Parcours -->
+    <section class="section wide-layout">
+      <p class="eyebrow reveal">Parcours</p>
+      <h2 class="display-title reveal">Des environnements exigeants.</h2>
+      <ul class="xp">
+        {
+          experiences.map(e => (
+            <li class="xp-row reveal">
+              <div>
+                <p class="xp-company">{e.company}</p>
+                <p class="xp-team">{e.team}</p>
+              </div>
+              <p class="xp-role">{e.role}</p>
+              <p class="xp-years">{e.years}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={url("about")} class="link-arrow xp-more reveal"
+        >Parcours complet</a
+      >
     </section>
 
     <!-- Articles -->
@@ -157,7 +310,8 @@ const steps = [
       <p class="eyebrow">Travaillons ensemble</p>
       <h2 class="display-title">Un projet en tête&nbsp;?</h2>
       <p class="lead-text">
-        Parlons de vos besoins, simplement et sans engagement.
+        Agents IA, refonte d'architecture ou nouveau produit&nbsp;: parlons-en,
+        simplement et sans engagement.
       </p>
       <a href={contactUrl} class="btn-primary" {...contactAttrs}>Me contacter</a
       >
@@ -209,7 +363,8 @@ const steps = [
     line-height: 1.04;
     font-weight: 700;
     letter-spacing: -0.045em;
-    max-width: 14ch;
+    max-width: 20ch;
+    text-wrap: balance;
   }
   .lead {
     margin: 28px auto 0;
@@ -416,6 +571,188 @@ const steps = [
   @media (max-width: 480px) {
     .hide-xs {
       display: none;
+    }
+  }
+
+  /* ---------- Hero emphasis ---------- */
+  .lead strong {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+
+  /* ---------- Stats ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-unit {
+    margin-inline-start: 4px;
+    font-size: 0.45em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--muted-foreground);
+  }
+  .stat-label {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+  }
+
+  /* ---------- Expertise (2 × 2) ---------- */
+  .grid-2 {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .grid-2 > :nth-child(2),
+  .grid-2 > :nth-child(4) {
+    --reveal-delay: 0.08s;
+  }
+  .card-tags {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .card-tags li {
+    padding: 4px 10px;
+    border-radius: 980px;
+    background: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  /* ---------- Étude de cas ---------- */
+  .case {
+    padding: clamp(32px, 5vw, 56px);
+  }
+  .case-head .display-title {
+    margin-top: 8px;
+    max-width: 18ch;
+  }
+  .case-head .lead-text {
+    margin-top: 18px;
+    max-width: 40rem;
+  }
+  .phases {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .phase {
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .phase h3 {
+    margin-top: 10px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .phase p {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted-foreground);
+  }
+  .case-foot {
+    margin-top: 36px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: var(--surface-alt);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .case-foot .link-arrow {
+    font-size: 16px;
+  }
+
+  /* ---------- Méthode ---------- */
+  .section-lead {
+    margin-top: 18px;
+    max-width: 40rem;
+  }
+
+  /* ---------- Parcours ---------- */
+  .xp {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .xp-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) 110px;
+    align-items: center;
+    gap: 8px 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .xp-company {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .xp-team {
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+  .xp-role {
+    font-size: 16px;
+  }
+  .xp-years {
+    text-align: end;
+    font-size: 14px;
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+  .xp-more {
+    display: inline-block;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 860px) {
+    .stats,
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .phases {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .grid-2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .xp-row {
+      grid-template-columns: minmax(0, 1fr) 100px;
+    }
+    .xp-role {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      color: var(--muted-foreground);
+      font-size: 15px;
     }
   }
 </style>

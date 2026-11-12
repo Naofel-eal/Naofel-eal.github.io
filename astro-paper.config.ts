@@ -5,7 +5,7 @@ export default defineAstroPaperConfig({
     url: "https://naofel-eal.github.io/",
     title: "Naofel El Alouani",
     description:
-      "Articles, retours d'expérience et notes techniques de Naofel El Alouani, développeur freelance.",
+      "Naofel El Alouani, ingénieur logiciel senior freelance : IA agentique, agents de code autonomes, Domain-Driven Design et architecture hexagonale.",
     author: "Naofel El Alouani",
     profile: "https://naofel-eal.github.io/about/",
     ogImage: "default-og.jpg",
@@ -29,9 +29,11 @@ export default defineAstroPaperConfig({
     toc: true,
   },
   socials: [
+    {
+      name: "linkedin",
+      url: "https://www.linkedin.com/in/naofel-el-alouani-83a947197/",
+    },
     { name: "github", url: "https://github.com/Naofel-eal" },
-    // TODO : décommente et mets l'URL de ton profil LinkedIn
-    // { name: "linkedin", url: "https://www.linkedin.com/in/ton-profil/" },
   ],
   shareLinks: [
     {
