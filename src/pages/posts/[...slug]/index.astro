@@ -4,6 +4,8 @@ import PostLayout from "@/layouts/PostLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { formatPostDate } from "@/utils/formatPostDate";
+import { tagSlug } from "@/utils/tags";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations } from "@/i18n";
 import { getPostSlug, getPostUrl } from "@/utils/getPostPaths";
 import { getSortedPosts } from "@/utils/getSortedPosts";
@@ -69,6 +71,7 @@ const {
   pubDatetime,
   modDatetime,
   timezone,
+  tags,
   hideEditPost,
   hideToc,
 } = post.data;
@@ -157,6 +160,22 @@ const ogImage = ogImageUrl
 
     <div class="app-layout">
       <div class="post-foot">
+        {
+          tags.length > 0 && (
+            <ul class="post-tags" aria-label="Sujets de l'article">
+              {tags.map(t => (
+                <li>
+                  <a
+                    class="chip"
+                    href={`${getRelativeLocaleUrl(locale, "posts")}?tag=${tagSlug(t)}`}
+                  >
+                    {t}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
         <ShareLinks />
       </div>
 
@@ -708,7 +727,12 @@ const ogImage = ogImageUrl
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 20px;
+  }
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 </style>

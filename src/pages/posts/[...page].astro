@@ -3,12 +3,12 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
-import Breadcrumb from "@/components/Breadcrumb.astro";
 import Main from "@/components/Main.astro";
 import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import Pagination from "@/components/Pagination.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getAllTags } from "@/utils/tags";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -21,20 +21,203 @@ const { page } = Astro.props;
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
+
+// Les tags proposés au filtre sont ceux des articles affichés sur la page.
+const tags = getAllTags(page.data);
+const total = page.data.length;
+const plural = (n: number) => (n > 1 ? `${n} articles` : `${n} article`);
 ---
 
 <Layout title={`${t.pages.postsTitle} | ${config.site.title}`}>
   <Header />
 
-  <Breadcrumb />
-
   <Main pageTitle={t.pages.postsTitle} pageDesc={t.pages.postsDesc}>
-    <ul>
+    {
+      tags.length > 0 && (
+        <div class="reveal filter" data-tag-filter>
+          <div
+            class="filter-tags"
+            role="group"
+            aria-label="Filtrer les articles par sujet"
+          >
+            <button
+              type="button"
+              class="filter-chip is-all"
+              data-tag=""
+              aria-pressed="true"
+            >
+              Tous
+            </button>
+            {tags.map(tag => (
+              <button
+                type="button"
+                class="filter-chip"
+                data-tag={tag.slug}
+                aria-pressed="false"
+              >
+                {tag.name}
+                <span class="filter-count">{tag.count}</span>
+              </button>
+            ))}
+          </div>
+          <p class="filter-status" aria-live="polite" data-filter-status>
+            {plural(total)}
+          </p>
+        </div>
+      )
+    }
+
+    <ul data-post-list>
       {page.data.map(data => <Card {...data} />)}
     </ul>
+
+    <div class="empty" data-empty hidden>
+      <p>Aucun article ne correspond à ce filtre pour l'instant.</p>
+      <button type="button" class="link-arrow" data-reset>
+        Voir tous les articles
+      </button>
+    </div>
   </Main>
 
   <Pagination {page} />
 
   <Footer noMarginTop={page.lastPage > 1} />
 </Layout>
+
+<script>
+  function initTagFilter() {
+    const root = document.querySelector<HTMLElement>("[data-tag-filter]");
+    const list = document.querySelector<HTMLElement>("[data-post-list]");
+    if (!root || !list) return;
+
+    const chips = [...root.querySelectorAll<HTMLButtonElement>(".filter-chip")];
+    const items = [...list.querySelectorAll<HTMLElement>(":scope > li")];
+    const status = root.querySelector<HTMLElement>("[data-filter-status]");
+    const empty = document.querySelector<HTMLElement>("[data-empty]");
+    const known = new Set(chips.map(c => c.dataset.tag).filter(Boolean));
+
+    const plural = (n: number) => (n > 1 ? `${n} articles` : `${n} article`);
+
+    // Sélection initiale depuis l'URL : /posts/?tag=ia-agentique,architecture
+    const fromUrl = (new URL(location.href).searchParams.get("tag") ?? "")
+      .split(",")
+      .filter(tag => known.has(tag));
+    const selected = new Set<string>(fromUrl);
+
+    function render() {
+      chips.forEach(chip => {
+        const tag = chip.dataset.tag ?? "";
+        const active = tag ? selected.has(tag) : selected.size === 0;
+        chip.setAttribute("aria-pressed", String(active));
+      });
+
+      let shown = 0;
+      items.forEach(item => {
+        const itemTags = (item.dataset.tags ?? "").split(" ");
+        const visible =
+          selected.size === 0 || itemTags.some(tag => selected.has(tag));
+        item.hidden = !visible;
+        if (visible) {
+          shown += 1;
+          item.classList.add("is-visible");
+        }
+      });
+
+      if (status) {
+        status.textContent =
+          selected.size === 0
+            ? plural(items.length)
+            : `${plural(shown)} sur ${items.length}`;
+      }
+      if (empty) empty.hidden = shown > 0;
+
+      const url = new URL(location.href);
+      if (selected.size) url.searchParams.set("tag", [...selected].join(","));
+      else url.searchParams.delete("tag");
+      history.replaceState(history.state, "", url);
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const tag = chip.dataset.tag ?? "";
+        if (!tag) selected.clear();
+        else if (selected.has(tag)) selected.delete(tag);
+        else selected.add(tag);
+        render();
+      });
+    });
+
+    document.querySelector("[data-reset]")?.addEventListener("click", () => {
+      selected.clear();
+      render();
+    });
+
+    render();
+  }
+
+  document.addEventListener("astro:page-load", initTagFilter);
+</script>
+
+<style>
+  .filter {
+    margin-bottom: 32px;
+  }
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 980px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--foreground);
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s var(--ease-out);
+  }
+  .filter-chip:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  }
+  .filter-chip:active {
+    transform: scale(0.96);
+  }
+  .filter-chip[aria-pressed="true"] {
+    background: var(--foreground);
+    border-color: var(--foreground);
+    color: var(--background);
+  }
+  .filter-count {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.55;
+  }
+  .filter-status {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+  .empty {
+    padding: 48px 0;
+    text-align: center;
+    color: var(--muted-foreground);
+  }
+  .empty .link-arrow {
+    margin-top: 12px;
+    font-size: 15px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .filter-chip {
+      transition: none;
+    }
+  }
+</style>

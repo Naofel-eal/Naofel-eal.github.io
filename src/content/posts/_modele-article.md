@@ -5,6 +5,8 @@ title: "Titre de l'article"
 description: "1 à 2 phrases. C'est le texte affiché sous le titre dans l'aperçu LinkedIn."
 pubDatetime: 2026-01-01T09:00:00+01:00
 featured: false
+tags: # sujets de l'article, utilisés pour le filtre de la page Articles
+  - IA agentique
 draft: true # passe à false pour publier
 ---
 

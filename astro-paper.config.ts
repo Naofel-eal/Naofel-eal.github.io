@@ -14,7 +14,7 @@ export default defineAstroPaperConfig({
     dir: "ltr",
   },
   posts: {
-    perPage: 6,
+    perPage: 50, // tout sur une page, pour que le filtre par tag porte sur tous les articles
     perIndex: 4,
   },
   features: {

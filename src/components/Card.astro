@@ -3,18 +3,19 @@ import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import { formatPostDate } from "@/utils/formatPostDate";
+import { tagSlug } from "@/utils/tags";
 
 type Props = {
   variant?: "h2" | "h3";
 } & CollectionEntry<"posts">;
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
-const { title, description, pubDatetime, modDatetime, timezone } = data;
+const { title, description, pubDatetime, modDatetime, timezone, tags } = data;
 const isModified = modDatetime && modDatetime > pubDatetime;
 const date = isModified ? modDatetime : pubDatetime;
 ---
 
-<li class="card-item reveal">
+<li class="card-item reveal" data-tags={tags.map(tagSlug).join(" ")}>
   <a
     href={getPostUrl(id, filePath, Astro.currentLocale)}
     class="surface-card group card-link"
@@ -26,6 +27,15 @@ const date = isModified ? modDatetime : pubDatetime;
       {title}
     </Heading>
     <p class="card-desc">{description}</p>
+    {
+      tags.length > 0 && (
+        <ul class="card-tags" aria-label="Sujets">
+          {tags.map(t => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      )
+    }
     <span class="link-arrow card-more">Lire l'article</span>
   </a>
 </li>
@@ -63,6 +73,20 @@ const date = isModified ? modDatetime : pubDatetime;
     line-height: 1.55;
     color: var(--muted-foreground);
     flex: 1;
+  }
+  .card-tags {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .card-tags li {
+    padding: 3px 10px;
+    border-radius: 980px;
+    background: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--foreground);
   }
   .card-more {
     margin-top: 20px;

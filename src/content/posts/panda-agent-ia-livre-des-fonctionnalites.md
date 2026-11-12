@@ -3,6 +3,11 @@ title: "Notre agent IA n'écrit pas de code. Il livre des fonctionnalités."
 description: "Comment nous avons construit PANDA, un orchestrateur autonome qui lit les tickets Jira, implémente le code et traite les retours de revue, tout en laissant les développeurs maîtres de ce qui part en production."
 pubDatetime: 2026-05-25T09:00:00+02:00
 featured: true
+tags:
+  - IA agentique
+  - Agents de code
+  - Architecture
+  - Retour d'expérience
 draft: false
 ogImage: ../../assets/images/panda/couverture.png
 ---
