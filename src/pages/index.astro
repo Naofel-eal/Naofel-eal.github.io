@@ -374,8 +374,11 @@ const experiences = [
     <!-- CTA -->
     <section class="cta reveal">
       <div class="cta-glow" aria-hidden="true"></div>
+      <div class="cta-dots" aria-hidden="true"></div>
       <p class="eyebrow">Travaillons ensemble</p>
-      <h2 class="display-title">Un projet en tête&nbsp;?</h2>
+      <h2 class="display-title">
+        Un projet <span class="gradient-text">en tête&nbsp;?</span>
+      </h2>
       <p class="lead-text">
         Agents IA, refonte d'architecture ou nouveau produit&nbsp;: parlons-en,
         simplement et sans engagement.
@@ -522,12 +525,16 @@ const experiences = [
   }
 
   /* ---------- CTA ---------- */
-  /* Panneau sombre à fort contraste, identique dans les deux thèmes. */
+  /* Clair : panneau lumineux teinté, trame de points. Sombre : panneau noir. */
   .cta {
-    --cta-bg: #0a0a0c;
-    --cta-text: #f5f5f7;
-    --cta-text-2: rgba(245, 245, 247, 0.72);
-    --cta-accent: #2997ff;
+    --cta-bg: linear-gradient(180deg, #f3f8ff 0%, #f8f5ff 55%, #ffffff 100%);
+    --cta-text: #1d1d1f;
+    --cta-text-2: #424245;
+    --cta-accent: var(--accent);
+    --cta-border: rgba(0, 113, 227, 0.14);
+    --cta-dot: rgba(0, 113, 227, 0.22);
+    --cta-glow-1: rgba(0, 113, 227, 0.14);
+    --cta-glow-2: rgba(122, 92, 255, 0.1);
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -538,15 +545,18 @@ const experiences = [
     color: var(--cta-text);
     background: var(--cta-bg);
     border-radius: 32px;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-      0 24px 60px rgba(0, 0, 0, 0.18);
+    border: 1px solid var(--cta-border);
+    box-shadow: var(--shadow-card);
   }
   :global([data-theme="dark"]) .cta {
     --cta-bg: #111114;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-      0 24px 60px rgba(0, 0, 0, 0.5);
+    --cta-text: #f5f5f7;
+    --cta-text-2: rgba(245, 245, 247, 0.72);
+    --cta-border: rgba(255, 255, 255, 0.1);
+    --cta-dot: rgba(255, 255, 255, 0.07);
+    --cta-glow-1: rgba(41, 151, 255, 0.28);
+    --cta-glow-2: rgba(167, 139, 250, 0.22);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
   }
   /* Liseré lumineux sur le bord supérieur */
   .cta::before {
@@ -568,19 +578,31 @@ const experiences = [
   .cta-glow {
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: -2;
     pointer-events: none;
     background:
-      radial-gradient(
-        60% 55% at 50% 0%,
-        rgba(41, 151, 255, 0.28),
-        transparent 70%
-      ),
-      radial-gradient(
-        40% 40% at 50% 0%,
-        rgba(167, 139, 250, 0.22),
-        transparent 70%
-      );
+      radial-gradient(60% 55% at 50% 0%, var(--cta-glow-1), transparent 70%),
+      radial-gradient(40% 40% at 50% 0%, var(--cta-glow-2), transparent 70%);
+  }
+  /* Trame de points, estompée vers les bords */
+  .cta-dots {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(var(--cta-dot) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: center;
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 65% at 50% 45%,
+      #000 20%,
+      transparent 75%
+    );
+    mask-image: radial-gradient(
+      ellipse 70% 65% at 50% 45%,
+      #000 20%,
+      transparent 75%
+    );
   }
   .cta .eyebrow {
     color: var(--cta-accent);
@@ -594,11 +616,11 @@ const experiences = [
     max-width: 30rem;
     color: var(--cta-text-2);
   }
-  .cta .btn-primary {
+  :global([data-theme="dark"]) .cta .btn-primary {
     background: #ffffff;
     color: #1d1d1f;
   }
-  .cta .btn-primary:hover {
+  :global([data-theme="dark"]) .cta .btn-primary:hover {
     background: #e8e8ed;
   }
 
