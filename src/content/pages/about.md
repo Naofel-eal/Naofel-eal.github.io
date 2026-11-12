@@ -50,4 +50,4 @@ _Ingénieur cybersécurité_
 
 ## Travaillons ensemble
 
-Je suis disponible pour des missions en **remote** ou en **hybride**. Réservez un appel ou écrivez-moi depuis la [page contact](/contact/), ou retrouvez-moi sur [LinkedIn](https://www.linkedin.com/in/naofel-el-alouani-83a947197/), [Malt](https://www.malt.fr/profile/naofelelalouani) et [GitHub](https://github.com/Naofel-eal).
+Je suis disponible pour des missions en **remote** ou en **hybride**. Réservez un appel ou écrivez-moi depuis la [page contact](/contact/), ou retrouvez-moi sur [LinkedIn](https://www.linkedin.com/in/naofel-el-alouani/), [Malt](https://www.malt.fr/profile/naofelelalouani) et [GitHub](https://github.com/Naofel-eal).

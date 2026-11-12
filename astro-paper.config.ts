@@ -34,7 +34,7 @@ export default defineAstroPaperConfig({
   socials: [
     {
       name: "linkedin",
-      url: "https://www.linkedin.com/in/naofel-el-alouani-83a947197/",
+      url: "https://www.linkedin.com/in/naofel-el-alouani/",
     },
     { name: "github", url: "https://github.com/Naofel-eal" },
     { name: "malt", url: "https://www.malt.fr/profile/naofelelalouani" },
