@@ -30,7 +30,7 @@ const stats = [
   {
     value: "Senior",
     unit: "",
-    label: "niveau évalué par la direction technique de TotalEnergies",
+    label: "reconnu après seulement 2 ans d'expérience professionnelle",
   },
 ];
 
@@ -104,8 +104,27 @@ const steps = [
   },
   {
     n: "03",
-    title: "Livrer avec des agents",
-    text: "Les agents IA implémentent dans ce cadre, sous contrôle humain. L'architecture garantit la qualité.",
+    title: "Livrer avec des agents, sous contrôle",
+    text: "Les agents implémentent en TDD, et chaque livraison passe par des contrôles automatisés. L'agent dispose lui-même des outils pour vérifier son travail avant qu'un humain ne le valide.",
+    tags: [
+      "TDD",
+      "100 % de couverture sur le domaine",
+      "Tests d'intégration",
+      "Tests end-to-end",
+      "Agents reviewers",
+      "Conventions de code",
+      "Skills & MCP de validation",
+    ],
+  },
+  {
+    n: "04",
+    title: "Documenter comme on code",
+    text: "La documentation est versionnée avec le code et évolue avec lui : c'est le contexte le plus fiable qu'on puisse donner à un agent. Un workflow GitHub la publie ensuite automatiquement dans Confluence.",
+    tags: [
+      "Docs as code",
+      "Versionnée avec le code",
+      "Export Confluence automatisé",
+    ],
   },
 ];
 
@@ -269,16 +288,24 @@ const experiences = [
         Un agent n'est bon que si son contexte l'est.
       </h2>
       <p class="lead-text section-lead reveal">
-        Le DDD et le BDD produisent exactement ce dont un agent a besoin&nbsp;:
-        un vocabulaire métier précis et des comportements attendus vérifiables.
+        Le DDD, le BDD et une documentation à jour donnent à l'agent un
+        vocabulaire métier précis et des comportements vérifiables. Les tests et
+        les contrôles automatisés vérifient chaque ligne qu'il écrit.
       </p>
-      <ol class="grid-3 steps">
+      <ol class="grid-2 steps">
         {
           steps.map(s => (
             <li class="step reveal">
               <span class="step-n">{s.n}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
+              {s.tags && (
+                <ul class="card-tags">
+                  {s.tags.map(t => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
         }
@@ -674,6 +701,9 @@ const experiences = [
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
+  }
+  .grid-2.steps {
+    gap: 36px 40px;
   }
   .grid-2 > :nth-child(2),
   .grid-2 > :nth-child(4) {
