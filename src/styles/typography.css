@@ -202,3 +202,57 @@
     }
   }
 }
+
+/* ===== Éléments spécifiques aux articles ===== */
+@layer components {
+  /* Schéma d'étapes numérotées (ex. cycle de vie d'un ticket) */
+  .app-prose .ticket-flow {
+    counter-reset: flow;
+    list-style: none;
+    margin: 2em 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .app-prose .ticket-flow li {
+    counter-increment: flow;
+    position: relative;
+    margin: 0;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .app-prose .ticket-flow li::before {
+    content: counter(flow, decimal-leading-zero);
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  @media (max-width: 480px) {
+    .app-prose .ticket-flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Vidéos d'illustration */
+  .app-prose video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    box-shadow: var(--shadow-card);
+    background: var(--surface);
+  }
+  .app-prose figure {
+    margin: 2em 0;
+  }
+}
