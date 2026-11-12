@@ -205,41 +205,119 @@
 
 /* ===== Éléments spécifiques aux articles ===== */
 @layer components {
-  /* Schéma d'étapes numérotées (ex. cycle de vie d'un ticket) */
+  /* Frise d'étapes verticale (ex. cycle de vie d'un ticket) */
+  .app-prose .flow-figure {
+    margin: 2.2em 0;
+    padding: 28px 28px 22px;
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
   .app-prose .ticket-flow {
     counter-reset: flow;
     list-style: none;
-    margin: 2em 0;
+    margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
+    column-gap: 40px;
   }
   .app-prose .ticket-flow li {
     counter-increment: flow;
     position: relative;
     margin: 0;
-    padding: 14px 16px;
-    border-radius: 14px;
-    background: var(--surface);
-    box-shadow: var(--shadow-card);
-    font-size: 15px;
+    padding: 3px 0 18px 44px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 1.35;
+    line-height: 1.4;
+    color: var(--foreground);
   }
+  /* Point numéroté */
   .app-prose .ticket-flow li::before {
-    content: counter(flow, decimal-leading-zero);
-    display: block;
-    margin-bottom: 6px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
+    content: counter(flow);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    background: var(--surface);
     color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .app-prose .ticket-flow li.is-auto::before {
+    background: var(--accent);
+    color: #fff;
+  }
+  /* Trait vers l'étape suivante */
+  .app-prose .ticket-flow li::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    left: 13.25px;
+    width: 1.5px;
+    bottom: 0;
+    background: color-mix(in srgb, var(--accent) 30%, var(--border));
+  }
+  .app-prose .ticket-flow li:last-child::after,
+  .app-prose .ticket-flow li:nth-child(5)::after {
+    display: none;
+  }
+  .app-prose .ticket-flow li:nth-child(5),
+  .app-prose .ticket-flow li:last-child {
+    padding-bottom: 0;
+  }
+  /* Légende */
+  .app-prose .flow-legend {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+  .app-prose .flow-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .app-prose .flow-key {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+  }
+  .app-prose .flow-key.is-auto {
+    background: var(--accent);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
+    .app-prose .flow-figure {
+      padding: 22px 20px 18px;
+    }
     .app-prose .ticket-flow {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-auto-flow: row;
+    }
+    .app-prose .ticket-flow li:nth-child(5)::after {
+      display: block;
+    }
+    .app-prose .ticket-flow li:nth-child(5) {
+      padding-bottom: 18px;
+    }
+    .app-prose .ticket-flow li {
+      font-size: 15px;
     }
   }
 

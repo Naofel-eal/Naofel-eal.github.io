@@ -22,17 +22,23 @@ Cet article présente **PANDA** (_Project Automation & Delivery Assistant_), le 
 
 Dans une équipe de développement, le cycle de vie d'un ticket suit un schéma prévisible :
 
-<ol class="ticket-flow" aria-label="Cycle de vie type d'un ticket">
-  <li>Ticket créé</li>
-  <li>Le dev lit le ticket</li>
-  <li>Exploration du code</li>
-  <li>Implémentation</li>
-  <li>Push et pull request</li>
-  <li>Revue de code</li>
-  <li>Prise en compte des retours</li>
-  <li>Merge</li>
-  <li>Validation par le PO</li>
-</ol>
+<figure class="flow-figure">
+  <ol class="ticket-flow" aria-label="Cycle de vie type d'un ticket">
+    <li>Ticket créé</li>
+    <li class="is-auto">Lecture du ticket</li>
+    <li class="is-auto">Exploration du code</li>
+    <li class="is-auto">Implémentation</li>
+    <li class="is-auto">Push et PR</li>
+    <li>Revue de code</li>
+    <li class="is-auto">Correction des retours</li>
+    <li>Merge</li>
+    <li>Validation par le PO</li>
+  </ol>
+  <figcaption class="flow-legend">
+    <span><i class="flow-key is-auto" aria-hidden="true"></i>Étape mécanique, confiable à un agent</span>
+    <span><i class="flow-key" aria-hidden="true"></i>Étape humaine</span>
+  </figcaption>
+</figure>
 
 Ce cycle représente **4 à 6 heures de travail effectif par ticket**. Or, quand le ticket est bien défini, la plupart de ces étapes sont mécaniques : lire une spécification claire, naviguer dans un code connu, appliquer un changement circonscrit, traiter des commentaires de revue.
 
