@@ -60,7 +60,7 @@
 @layer components {
   .btn-primary {
     display: inline-block;
-    background: var(--accent);
+    background: var(--accent-strong);
     color: #fff;
     font-size: 17px;
     font-weight: 500;
@@ -71,7 +71,7 @@
       transform 0.2s ease;
   }
   .btn-primary:hover {
-    background: var(--accent-hover);
+    background: var(--accent-strong-hover);
   }
   .btn-primary:active {
     transform: scale(0.97);
